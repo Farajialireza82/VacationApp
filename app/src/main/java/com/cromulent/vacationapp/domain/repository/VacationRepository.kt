@@ -11,6 +11,11 @@ interface VacationRepository {
         category: String? = null
     ): Flow<List<Location?>>
 
+
+    suspend fun getLocationDetails(
+        locationId: String,
+    ): Flow<Location?>
+
     suspend fun getLocationPhotos(locationId: String?): Flow<List<LocationPhoto>?>
 
 }

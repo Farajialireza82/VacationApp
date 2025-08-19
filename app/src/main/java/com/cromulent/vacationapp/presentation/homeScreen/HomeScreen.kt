@@ -22,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,12 +35,13 @@ import com.cromulent.vacationapp.util.Constants.CATEGORIES
 
 @Composable
 fun HomeScreen(
+    modifier: Modifier = Modifier,
     viewmodel: HomeViewmodel,
-    modifier: Modifier = Modifier
+    openDetailsScreen: (String) -> Unit
 ) {
 
     val state = viewmodel.state.collectAsState()
-    var selectedCategory by remember { mutableStateOf(CATEGORIES[0]) }
+    var selectedCategory by rememberSaveable { mutableStateOf(CATEGORIES[0]) }
     var snackbarHostState  = remember{ SnackbarHostState() }
 
     LaunchedEffect(selectedCategory) {
@@ -108,7 +110,11 @@ fun HomeScreen(
                 listTitle = "Popular",
                 locations = state.value.locations,
                 isLoading = state.value.isLoading,
-                onLocationClicked = {},
+                onLocationClicked = {
+                    it?.locationId?.let {
+                        openDetailsScreen(it)
+                    }
+                },
                 onSeeAllClicked = {},
             )
 
@@ -120,7 +126,11 @@ fun HomeScreen(
                 listTitle = "Recommended",
                 locations = state.value.locations,
                 isLoading = state.value.isLoading,
-                onLocationClicked = {},
+                onLocationClicked = {
+                    it?.locationId?.let {
+                        openDetailsScreen(it)
+                    }
+                },
             )
 
         }
