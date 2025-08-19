@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -50,7 +51,8 @@ fun HomeScreen(
            val result =  snackbarHostState.showSnackbar(
                 message = state.value.error ?: "Something went wrong",
                 withDismissAction = true,
-                actionLabel = "Refresh")
+                actionLabel = "Refresh",
+               duration =  SnackbarDuration.Short)
             if (result == SnackbarResult.ActionPerformed) {
                 viewmodel.getNearbyLocations("42.3455,-71.10767", selectedCategory.key)
             }

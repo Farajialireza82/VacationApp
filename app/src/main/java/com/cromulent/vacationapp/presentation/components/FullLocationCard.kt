@@ -66,12 +66,12 @@ fun FullLocationCard(
 
     Box(
         modifier = modifier
-            .clickable(
-                onClick = { onClick(location) }
-            )
             .width(188.dp)
             .height(240.dp)
             .clip(RoundedCornerShape(24.dp))
+            .clickable(
+                onClick = { onClick(location) }
+            )
     ) {
 
         if (imageState is AsyncImagePainter.State.Success) {
