@@ -1,10 +1,13 @@
 package com.cromulent.vacationapp.util
 
+import com.cromulent.vacationapp.BuildConfig
+
 object Constants {
 
     const val USER_SETTINGS = "userSettings"
     const val APP_ENTRY = "appEntry"
-    const val API_KEY = "GET YOUR OWN API KEY FROM TRIP ADVISOR"
+    const val API_KEY = BuildConfig.API_KEY
+
     const val BASE_URL =  "https://api.content.tripadvisor.com/api/v1/"
 
     val CATEGORIES = listOf(
