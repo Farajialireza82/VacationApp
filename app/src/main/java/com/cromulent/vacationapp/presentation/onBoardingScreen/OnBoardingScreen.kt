@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.onBoarding
+package com.cromulent.vacationapp.presentation.onBoardingScreen
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -29,14 +28,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices.PIXEL_7_PRO
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
-import com.cromulent.vacationapp.presentation.onBoarding.components.OnBoardingButton
+import com.cromulent.vacationapp.presentation.onBoardingScreen.components.OnBoardingButton
 import com.cromulent.vacationapp.ui.theme.HiatusFont
-import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import kotlinx.coroutines.launch
 
 @Composable

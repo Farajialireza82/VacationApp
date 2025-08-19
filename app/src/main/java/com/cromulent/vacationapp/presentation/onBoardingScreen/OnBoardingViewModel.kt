@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.onBoarding
+package com.cromulent.vacationapp.presentation.onBoardingScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
