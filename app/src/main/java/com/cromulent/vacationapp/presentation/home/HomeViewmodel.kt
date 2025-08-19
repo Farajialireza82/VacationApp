@@ -38,7 +38,8 @@ class HomeViewmodel @Inject constructor(
     ) {
 
         _state.value = _state.value.copy(
-            isLoading = true
+            isLoading = true,
+            error = null
         )
 
         if (cachedLocationData.contains(category)) {
