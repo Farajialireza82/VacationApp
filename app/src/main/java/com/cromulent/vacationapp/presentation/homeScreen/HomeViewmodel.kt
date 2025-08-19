@@ -1,11 +1,9 @@
-package com.cromulent.vacationapp.presentation.home
+package com.cromulent.vacationapp.presentation.homeScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.model.Location
-import com.cromulent.vacationapp.model.LocationPhoto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

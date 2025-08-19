@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.home
+package com.cromulent.vacationapp.presentation.homeScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.cromulent.vacationapp.presentation.components.CompactLocationCardList
 import com.cromulent.vacationapp.presentation.components.FullLocationCardList
 import com.cromulent.vacationapp.presentation.components.SearchField
-import com.cromulent.vacationapp.presentation.home.components.CategoryChip
-import com.cromulent.vacationapp.presentation.home.components.HomeTopBar
+import com.cromulent.vacationapp.presentation.homeScreen.components.CategoryChip
+import com.cromulent.vacationapp.presentation.homeScreen.components.HomeTopBar
 import com.cromulent.vacationapp.util.Constants.CATEGORIES
 
 @Composable

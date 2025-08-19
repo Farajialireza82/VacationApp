@@ -1,8 +1,5 @@
 package com.cromulent.vacationapp.presentation.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -10,10 +7,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.cromulent.vacationapp.presentation.home.HomeScreen
-import com.cromulent.vacationapp.presentation.home.HomeViewmodel
-import com.cromulent.vacationapp.presentation.onBoarding.OnBoardingScreen
-import com.cromulent.vacationapp.presentation.onBoarding.OnBoardingViewModel
+import com.cromulent.vacationapp.presentation.homeScreen.HomeScreen
+import com.cromulent.vacationapp.presentation.homeScreen.HomeViewmodel
+import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingScreen
+import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingViewModel
 
 @Composable
 fun MainNavGraph(
