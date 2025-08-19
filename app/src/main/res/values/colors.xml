@@ -11,6 +11,9 @@
     <color name="background_secondary">#FFF5F9FF</color>
     <color name="background_tertiary">#FFF4F4F4</color>
     <color name="subtitle">#FFB8B8B8</color>
+    <color name="subtitle_secondary">#FF606060</color>
     <color name="search_field_border">#FFA8CCF0</color>
+    <color name="box_background">#FFEDF2fA</color>
+    <color name="money_color">#FF2DD7A4</color>
 
 </resources>

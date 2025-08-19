@@ -23,6 +23,8 @@ data class Location(
     val amenities: List<String>? = null,
     @SerializedName("see_all_photos")
     val seeAllPhotosLink: String? = null,
+    @SerializedName("web_url")
+    val webUrl: String? = null,
     @SerializedName("price_level")
     val priceLevel: String? = null,
     var locationPhotos: List<LocationPhoto>? = null
