@@ -39,6 +39,7 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 └── 🧠 ViewModels & State Management
 
 💼 Domain Layer
+├── 🔄 Use Cases
 ├── 📋 Repository Interfaces
 └── 🏷️ Domain Models
 
@@ -63,7 +64,9 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 - Geographic coordinates and maps
 
 ### 📱 **Modern UI/UX**
+- Material 3 Design System
 - Smooth animations and transitions
+- Dark/Light theme support
 - Responsive layouts for all screen sizes
 
 ### ⚡ **Performance & Reliability**
@@ -74,7 +77,6 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 ### 🔜 **Coming Soon**
 - Offline-first architecture
 - Comprehensive unit testing
-- Dark/Light theme support
 
 ## 🛠️ Tech Stack
 
@@ -136,23 +138,9 @@ Powered by the **TripAdvisor API**, providing access to:
 2. **Get your TripAdvisor API key**
    - Visit [TripAdvisor Developer Portal](https://www.tripadvisor.com/developers)
    - Create an account and generate an API key
-   - Add your API key to `local.properties`:
+   - Add your API key to `gradle.properties`:
    ```properties
-   TRIPADVISOR_API_KEY=your_api_key_here
-   ```
-   - Update your `Constants.kt` file to read from BuildConfig:
-   ```kotlin
-   // In your app-level build.gradle.kts
-   android {
-       buildTypes {
-           debug {
-               buildConfigField("String", "TRIPADVISOR_API_KEY", "\"${project.findProperty("TRIPADVISOR_API_KEY") ?: ""}\"")
-           }
-       }
-   }
-   
-   // In Constants.kt
-   const val API_KEY = BuildConfig.TRIPADVISOR_API_KEY
+   API_KEY=your_api_key_here
    ```
 
 3. **Open in Android Studio**
