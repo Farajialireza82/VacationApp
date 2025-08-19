@@ -2,6 +2,7 @@ package com.cromulent.vacationapp.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,6 +69,13 @@ fun CompactLocationCard(
                 color = colorResource(R.color.background_tertiary),
                 shape = RoundedCornerShape(16.dp)
             )
+            .clip(RoundedCornerShape(16.dp))
+            .clickable {
+
+                location?.let {
+                    onClick(location)
+                }
+            }
     ) {
 
         Column(
@@ -143,10 +151,10 @@ fun CompactLocationCard(
 @Composable
 private fun CompactLocationCardPrev() {
 
-    VacationAppTheme{
+    VacationAppTheme {
         CompactLocationCard(
             location = location
-        ){}
+        ) {}
     }
-    
+
 }
