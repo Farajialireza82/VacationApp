@@ -20,8 +20,12 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_VacationApp)
         enableEdgeToEdge()
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition { viewModel.startDestination.isEmpty() }
+        }
+
 
         setContent {
             VacationAppTheme {

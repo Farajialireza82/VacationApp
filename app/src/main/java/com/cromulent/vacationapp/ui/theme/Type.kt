@@ -39,7 +39,7 @@ val HiatusFont = FontFamily(
     Font(R.font.hiatus)
 )
 val MontserratFont = FontFamily(
-    Font(R.font.hiatus)
+    Font(R.font.montserrat)
 )
 val NeonBlitz = FontFamily(
     Font(R.font.neon_blitz)

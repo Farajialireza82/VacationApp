@@ -167,7 +167,7 @@ val pages = listOf(
     OnBoardingData(
         image = R.drawable.amesterdam,
         locationName = "Amsterdam",
-        title = "Welcome to Trippie",
+        title = "Welcome to Travelo",
         titleColor = Color.Black
     ),
     OnBoardingData(
