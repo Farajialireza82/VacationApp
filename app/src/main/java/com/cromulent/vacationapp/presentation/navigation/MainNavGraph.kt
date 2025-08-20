@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.cromulent.vacationapp.presentation.detailsScreen.DetailsScreen
 import com.cromulent.vacationapp.presentation.detailsScreen.DetailsViewmodel
+import com.cromulent.vacationapp.presentation.gpsScreen.GpsScreen
 import com.cromulent.vacationapp.presentation.homeScreen.HomeScreen
 import com.cromulent.vacationapp.presentation.homeScreen.HomeViewmodel
 import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingScreen
@@ -56,14 +57,18 @@ fun MainNavGraph(
                 val viewmodel: HomeViewmodel = hiltViewModel()
                 HomeScreen(
                     modifier = modifier,
-                    viewmodel = viewmodel
-                ) {
-                    navController.navigate(Route.DetailsScreenNavigation.route + "/" + it)
-                }
+                    viewmodel = viewmodel,
+                    openDetailsScreen = {
+                        navController.navigate(Route.DetailsScreen.route + "/" + it)
+                    },
+                    openLocationPickerScreen = {
+                        navController.navigate(Route.GpsScreen.route)
+                    }
+                )
             }
 
             composable(
-                route = Route.DetailsScreenNavigation.route + "/{location_id}",
+                route = Route.DetailsScreen.route + "/{location_id}",
                 arguments = listOf(
                     navArgument("location_id") { type = NavType.StringType }
                 )
@@ -72,6 +77,12 @@ fun MainNavGraph(
 
                 DetailsScreen(viewmodel = viewmodel)
 
+            }
+
+            composable(
+                route = Route.GpsScreen.route,
+            ) {
+                GpsScreen()
             }
         }
     }

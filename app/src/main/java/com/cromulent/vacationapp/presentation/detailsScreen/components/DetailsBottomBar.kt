@@ -80,7 +80,7 @@ fun DetailsBottomBar(
                 )
                 .clip(RoundedCornerShape(16.dp)),
             text = "Visit Website",
-            icon = Icons.AutoMirrored.Default.ArrowForward,
+            trailingIcon = Icons.AutoMirrored.Default.ArrowForward,
         ) {
             openWebsite()
         }

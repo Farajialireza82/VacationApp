@@ -28,7 +28,8 @@ import com.cromulent.vacationapp.R
 fun OnBoardingButton(
     modifier: Modifier = Modifier,
     text: String = "Explore",
-    icon: ImageVector? = null,
+    leadingIcon: ImageVector? = null,
+    trailingIcon: ImageVector? = null,
     onClick: () -> Unit,
 ) {
 
@@ -44,6 +45,16 @@ fun OnBoardingButton(
     ) {
 
         Row {
+
+            leadingIcon?.let {
+
+                Icon(
+                    imageVector = it,
+                    contentDescription = null
+                )
+                Spacer(Modifier.size(10.dp))
+            }
+
             Text(
                 modifier = Modifier
                     .animateContentSize(),
@@ -53,7 +64,7 @@ fun OnBoardingButton(
                 fontSize = 18.sp
             )
 
-            icon?.let {
+            trailingIcon?.let {
 
 
                 Spacer(Modifier.size(10.dp))

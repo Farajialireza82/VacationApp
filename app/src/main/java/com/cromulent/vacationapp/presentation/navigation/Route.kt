@@ -4,11 +4,13 @@ sealed class Route(
     val route: String
 ) {
 
-    object OnBoardingScreen: Route(route = "onBoardingScreen")
     object AppStartNavigation: Route(route = "appStartNavigation")
-    object HomeScreen: Route(route = "homeScreen")
     object HomeNavigation: Route(route = "homeNavigation")
-    object DetailsScreenNavigation: Route(route = "detailsScreen")
+
+    object OnBoardingScreen: Route(route = "onBoardingScreen")
+    object HomeScreen: Route(route = "homeScreen")
+    object DetailsScreen: Route(route = "detailsScreen")
+    object GpsScreen: Route(route = "GpsScreen")
 
 
 

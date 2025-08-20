@@ -1,6 +1,7 @@
 package com.cromulent.vacationapp.presentation.homeScreen.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -19,9 +20,16 @@ import androidx.compose.ui.unit.dp
 import com.cromulent.vacationapp.R
 
 @Composable
-fun LocationChip(modifier: Modifier = Modifier) {
+fun LocationChip(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit
+) {
     Row(
-        modifier = Modifier,
+        modifier = Modifier
+            .clickable{
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -34,9 +42,10 @@ fun LocationChip(modifier: Modifier = Modifier) {
         Spacer(Modifier.size(6.dp))
 
         Text(
-            text = "Aspen, USA",
+            text = text,
             color = Color.DarkGray,
-            fontWeight = FontWeight.W300)
+            fontWeight = FontWeight.W300
+        )
 
         Spacer(Modifier.size(6.dp))
 
