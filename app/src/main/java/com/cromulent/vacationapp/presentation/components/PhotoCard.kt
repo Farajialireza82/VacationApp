@@ -2,6 +2,7 @@ package com.cromulent.vacationapp.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -20,11 +21,14 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.cromulent.vacationapp.common.shimmerEffect
+import com.cromulent.vacationapp.model.LocationPhoto
 
 @Composable
 fun PhotoCard(
     modifier: Modifier = Modifier,
-    imageUrl: String?
+    imageUrl: String?,
+    contentScale: ContentScale = ContentScale.Crop,
+    onPhotoClicked: (() -> Unit)? = null,
 ) {
 
 
@@ -38,8 +42,13 @@ fun PhotoCard(
     if (imageState is AsyncImagePainter.State.Success) {
 
         Image(
-            modifier = modifier,
-            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .clickable(
+                    enabled = onPhotoClicked != null,
+                ){
+                    onPhotoClicked?.invoke()
+                },
+            contentScale = contentScale,
             painter = imageState.painter,
             contentDescription = null
         )
