@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -57,10 +58,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
@@ -77,6 +82,7 @@ import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import androidx.core.net.toUri
 import com.cromulent.vacationapp.model.LocationPhoto
 import com.cromulent.vacationapp.presentation.components.LocationPhotoSlider
+import com.cromulent.vacationapp.presentation.detailsScreen.components.AmenitiesBottomSheet
 import com.cromulent.vacationapp.util.openMapWithLocation
 import com.cromulent.vacationapp.util.openWebsite
 
@@ -129,6 +135,8 @@ fun DetailsScreen(
                     )
 
                     Text(
+                        modifier = Modifier
+                            .wrapContentWidth(),
                         text = state.value.location?.priceLevel ?: "Free",
                         color = colorResource(R.color.money_color),
                         fontSize = 24.sp,
@@ -241,7 +249,11 @@ fun DetailsScreen(
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp),
+                    .padding(
+                        top = 4.dp,
+                        start = 20.dp,
+                        end = 20.dp,
+                        ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -250,10 +262,10 @@ fun DetailsScreen(
                     contentDescription = null
                 )
 
-                Spacer(Modifier.size(8.dp))
+                Spacer(Modifier.size(4.dp))
 
                 Text(
-                    text = "${state.value.location?.rating} (${state.value.location?.reviewCount} reviews)",
+                    text = "${state.value.location?.rating ?: "No ratings"} (${state.value.location?.reviewCount?: "0"} reviews)",
                     fontSize = 12.sp,
                     color = colorResource(R.color.subtitle_secondary)
                 )
@@ -264,80 +276,51 @@ fun DetailsScreen(
             Spacer(Modifier.size(16.dp))
 
 
-            state.value.location?.description?.let {
+            val locationDescription = state.value.location?.description ?: "No description included"
 
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .animateContentSize(),
-                    text = it,
-                    maxLines = if (isDescriptionExpanded) Int.MAX_VALUE else 4,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 20.sp,
-                    color = colorResource(R.color.subtitle_secondary),
-                    fontSize = 14.sp
-                )
+            ExpandableText(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp),
+                text = locationDescription,
+                maxLines = if (isDescriptionExpanded) Int.MAX_VALUE else 4,
+                lineHeight = 20.sp,
+                color = colorResource(R.color.subtitle_secondary),
+                fontSize = 14.sp
+            )
 
-                Spacer(Modifier.size(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .clickable {
-                            isDescriptionExpanded = !isDescriptionExpanded
-                        }
-                ) {
-                    Text(
-                        fontWeight = FontWeight.W600,
-                        text = if (isDescriptionExpanded) "Read Less" else "Read More",
-                        fontSize = 12.sp,
-                        color = colorResource(R.color.primary)
-                    )
-
-                    Icon(
-                        imageVector = if (isDescriptionExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        tint = ColorPrimary,
-                        contentDescription = null
-                    )
-                }
-
-                Spacer(Modifier.size(32.dp))
-
-            }
-
-            if (state.value.location?.amenities.isNullOrEmpty().not()) {
-
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Amenities",
-                        fontWeight = FontWeight.W500,
-                        fontSize = 18.sp
-                    )
+            Spacer(Modifier.size(32.dp))
 
 
-                    Text(
-                        modifier = Modifier
-                            .clickable {
-                                isAmenitiesBottomSheetVisible = true
-                            },
-                        fontWeight = FontWeight.W600,
-                        text = "See all",
-                        fontSize = 12.sp,
-                        color = colorResource(R.color.primary)
-                    )
-                }
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth(),
+                text = "Amenities",
+                fontWeight = FontWeight.W500,
+                fontSize = 18.sp
+            )
+
+
+            if (state.value.location?.amenities?.isNotEmpty() == true) {
 
                 Spacer(Modifier.size(16.dp))
 
                 AmenitiesList(
                     amenities = state.value.location?.amenities,
-                    onSeeAllClicked = { isAmenitiesBottomSheetVisible = true })
+                    onSeeAllClicked = { isAmenitiesBottomSheetVisible = true }
+                )
+            } else {
 
+                Spacer(Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .animateContentSize(),
+                    text = "No amenities included",
+                    color = colorResource(R.color.subtitle_secondary),
+                    fontSize = 14.sp,
+                )
             }
         }
 
@@ -351,61 +334,57 @@ fun DetailsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AmenitiesBottomSheet(
-    amenities: List<String>,
-    onDismiss: () -> Unit
+fun ExpandableText(
+    text: String,
+    modifier: Modifier = Modifier,
+    maxLines: Int = 4,
+    fontSize: TextUnit = 14.sp,
+    lineHeight: TextUnit = 20.sp,
+    color: Color = colorResource(R.color.subtitle_secondary)
 ) {
-    ModalBottomSheet(
-        containerColor = colorResource(R.color.white),
-        onDismissRequest = onDismiss,
-        dragHandle = { BottomSheetDefaults.DragHandle() }
-    ) {
-        Column(
-            modifier = Modifier.padding(
-                horizontal = 24.dp)
+    var isExpanded by remember { mutableStateOf(false) }
+    var hasOverflow by remember { mutableStateOf(false) }
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    Text(
+        modifier = modifier
+            .animateContentSize(),
+        text = text,
+        maxLines = if (isExpanded) Int.MAX_VALUE else maxLines,
+        overflow = TextOverflow.Ellipsis,
+        lineHeight = lineHeight,
+        color = color,
+        fontSize = fontSize,
+        onTextLayout = { layoutResult ->
+            textLayoutResult = layoutResult
+            hasOverflow = layoutResult.hasVisualOverflow
+        }
+    )
+
+    // Show expand/collapse button only if text overflows
+    if (hasOverflow || isExpanded) {
+        Spacer(Modifier.size(8.dp))
+
+        Row(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .clickable {
+                    isExpanded = !isExpanded
+                }
         ) {
             Text(
-                text = "All Facilities (${amenities.size})",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight.W600,
+                text = if (isExpanded) "Read Less" else "Read More",
+                fontSize = 12.sp,
+                color = colorResource(R.color.primary)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            LazyColumn {
-                items(amenities) { amenity ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.Check,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = amenity,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-            }
+            Icon(
+                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                tint = ColorPrimary,
+                contentDescription = null
+            )
         }
     }
-}
-
-
-@Preview
-@Composable
-private fun DetailsScreenPrev() {
-
-    VacationAppTheme {
-    }
-
 }
