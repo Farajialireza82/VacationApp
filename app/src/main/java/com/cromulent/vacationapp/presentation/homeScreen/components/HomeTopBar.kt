@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.home.components
+package com.cromulent.vacationapp.presentation.homeScreen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

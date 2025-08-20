@@ -22,4 +22,10 @@ interface VacationApi {
         @Path("location_id") locationId: String,
         @Query("key") key: String = API_KEY,
     ): Response<List<LocationPhoto>>
+
+    @GET("location/{location_id}/details")
+    suspend fun getLocationDetails(
+        @Path("location_id") locationId: String,
+        @Query("key") key: String = API_KEY,
+    ): Location?
 }
