@@ -55,7 +55,7 @@ import com.cromulent.vacationapp.util.Samples.amenitiesList
 fun AmenitiesList(
     modifier: Modifier = Modifier,
     amenities: List<String>?,
-    onSeeAllClicked: () -> Unit
+    onSeeAllClicked: (() -> Unit)? = null
 ) {
     val priorityAmenities = getPriorityAmenities(amenities)
 
@@ -70,17 +70,15 @@ fun AmenitiesList(
             )
         }
 
-        // "See All" button
         item {
 
             Spacer(Modifier.size(12.dp))
 
             AmenityBox(
                 text = "See All",
-                icon = Icons.Rounded.MoreHoriz
-            ) {
-                onSeeAllClicked()
-            }
+                icon = Icons.Rounded.MoreHoriz,
+                onClick = onSeeAllClicked
+            )
 
             Spacer(Modifier.size(12.dp))
 
@@ -94,7 +92,8 @@ fun AmenityBox(
     modifier: Modifier = Modifier,
     text: String?,
     icon: ImageVector?,
-    onClick: () -> Unit = {}) {
+    onClick: (() -> Unit)? = null
+) {
 
     Column(
         modifier
@@ -105,8 +104,10 @@ fun AmenityBox(
                 shape = RoundedCornerShape(16.dp)
             )
             .clip(RoundedCornerShape((16.dp)))
-            .clickable{
-                onClick()
+            .clickable(
+                enabled = onClick != null
+            ){
+                onClick?.invoke()
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
