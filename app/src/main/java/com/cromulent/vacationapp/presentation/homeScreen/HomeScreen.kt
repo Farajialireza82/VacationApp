@@ -37,7 +37,8 @@ import com.cromulent.vacationapp.util.Constants.CATEGORIES
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewmodel: HomeViewmodel,
-    openDetailsScreen: (String) -> Unit
+    openDetailsScreen: (String) -> Unit,
+    openLocationPickerScreen: () -> Unit
 ) {
 
     val state = viewmodel.state.collectAsState()
@@ -68,7 +69,9 @@ fun HomeScreen(
             HomeTopBar(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 24.dp),
+                locationText = "Aspen, USA",
+                onLocationClicked = openLocationPickerScreen
             )
         },
         snackbarHost = {
@@ -81,7 +84,8 @@ fun HomeScreen(
         ) {
             SearchField(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp, vertical = 18.dp)
+                    .padding(horizontal = 24.dp, vertical = 18.dp),
+                hint = "Find things to do"
             )
 
             Spacer(Modifier.size(18.dp))

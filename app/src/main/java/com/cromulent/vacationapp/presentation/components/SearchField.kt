@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +30,9 @@ import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 
 @Composable
-fun SearchField(modifier: Modifier = Modifier) {
+fun SearchField(
+    modifier: Modifier = Modifier,
+    hint: String) {
 
     var text by remember { mutableStateOf("") }
 
@@ -46,8 +49,10 @@ fun SearchField(modifier: Modifier = Modifier) {
             onValueChange = { text = it },
             placeholder = {
                 Text(
-                    text = "Find things to do",
+                    text = hint,
                     fontSize = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = colorResource(R.color.subtitle),
                     )
             },
@@ -79,6 +84,8 @@ fun SearchField(modifier: Modifier = Modifier) {
 @Composable
 private fun SearchFieldPrev() {
     VacationAppTheme {
-        SearchField()
+        SearchField(
+            hint = "Find things to do"
+        )
     }
 }
