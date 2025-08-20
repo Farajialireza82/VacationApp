@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.home
+package com.cromulent.vacationapp.presentation.homeScreen
 
 import com.cromulent.vacationapp.model.Location
 

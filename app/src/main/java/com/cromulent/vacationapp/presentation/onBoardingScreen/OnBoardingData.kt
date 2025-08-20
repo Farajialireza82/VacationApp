@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.onBoarding
+package com.cromulent.vacationapp.presentation.onBoardingScreen
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
