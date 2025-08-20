@@ -1,8 +1,13 @@
 package com.cromulent.vacationapp.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class Location(
+
+    @PrimaryKey
     @SerializedName("location_id")
     val locationId: String,
     @SerializedName("name")

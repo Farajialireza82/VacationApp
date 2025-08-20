@@ -1,16 +1,17 @@
 package com.cromulent.vacationapp.di
 
 import android.app.Application
-import android.util.Log
+import androidx.room.Room
+import com.cromulent.vacationapp.data.local.LocationCacheDao
 import com.cromulent.vacationapp.data.manager.LocalUserManagerImpl
 import com.cromulent.vacationapp.data.remote.VacationApi
+import com.cromulent.vacationapp.data.local.LocationDatabase
+import com.cromulent.vacationapp.data.local.LocationTypeConvertor
 import com.cromulent.vacationapp.data.repository.VacationRepositoryImpl
 import com.cromulent.vacationapp.domain.manager.LocalUserManager
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.util.Constants.BASE_URL
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import com.google.gson.JsonSyntaxException
+import com.cromulent.vacationapp.util.Constants.LOCATION_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,8 +58,30 @@ object AppModule {
     @Provides
     @Singleton
     fun provideVacationRepository(
-        vacationApi: VacationApi
-    ): VacationRepository = VacationRepositoryImpl(vacationApi)
+        vacationApi: VacationApi,
+        locationCacheDao: LocationCacheDao
+    ): VacationRepository = VacationRepositoryImpl(vacationApi, locationCacheDao)
+
+    @Provides
+    @Singleton
+    fun provideLocationDatabase(
+        application: Application
+    ): LocationDatabase {
+        return Room.databaseBuilder(
+                context = application,
+                klass = LocationDatabase::class.java,
+                name = LOCATION_DATABASE_NAME
+            ).addTypeConverter(LocationTypeConvertor())
+            .fallbackToDestructiveMigration(false)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationCacheDao(
+        newsDatabase: LocationDatabase
+    ): LocationCacheDao = newsDatabase.locationCacheDao
+
 
 
 }
