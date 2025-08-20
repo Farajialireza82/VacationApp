@@ -10,9 +10,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cromulent.vacationapp.R
+import com.cromulent.vacationapp.ui.theme.NeonBlitz
 
 @Composable
 fun HomeTopBar(modifier: Modifier = Modifier) {
@@ -34,12 +40,22 @@ fun HomeTopBar(modifier: Modifier = Modifier) {
                 fontSize = 14.sp
             )
             Text(
-                text = "Aspen",
-                fontWeight = FontWeight.W500,
-                fontSize = 32.sp
+                text = stringResource(R.string.app_name),
+                fontWeight = FontWeight.Bold,
+                fontFamily = NeonBlitz,
+                color = colorResource(R.color.primary),
+                fontSize = 28.sp
             )
         }
 
        LocationChip()
     }
+}
+
+@Preview
+@Composable
+private fun HomeTBPrev() {
+
+    HomeTopBar()
+    
 }
