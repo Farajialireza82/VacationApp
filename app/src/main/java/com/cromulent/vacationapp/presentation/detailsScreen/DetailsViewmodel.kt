@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.repository.VacationRepository
+import com.cromulent.vacationapp.util.Samples
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,20 +40,13 @@ class DetailsViewmodel @Inject constructor(
 
 
         viewModelScope.launch {
+
             vacationRepository
                 .getLocationDetails(locationId)
-                .collectLatest {
-
-                    vacationRepository
-                        .getLocationPhotos(locationId).collectLatest { photos ->
-                            it?.locationPhotos = photos
-                            _state.value = _state.value.copy(location = it, isLoading = false)
-                        }
-
-
+                .collectLatest { location ->
+                    _state.value = _state.value.copy(location = location, isLoading = false)
                 }
-
         }
-    }
 
+    }
 }
