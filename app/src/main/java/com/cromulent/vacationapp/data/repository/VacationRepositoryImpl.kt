@@ -57,14 +57,19 @@ class VacationRepositoryImpl(
         }
     }
 
-    override suspend fun getLocationDetails(locationId: String): Flow<Resource<Location?>> {
+    override suspend fun getLocationDetails(
+        locationId: String,
+        forceRefresh: Boolean
+    ): Flow<Resource<Location?>> {
 
-        val cachedLocation = getLocationFromCache(locationId)
-        if (cachedLocation != null) {
-            return flow {
-                emit(
-                    Resource<Location?>.Success(cachedLocation)
-                )
+        if(forceRefresh.not()) {
+            val cachedLocation = getLocationFromCache(locationId)
+            if (cachedLocation != null) {
+                return flow {
+                    emit(
+                        Resource<Location?>.Success(cachedLocation)
+                    )
+                }
             }
         }
 
@@ -96,10 +101,11 @@ class VacationRepositoryImpl(
         response?.let {
 
             locationPhotos.collect {
-                when(it){
+                when (it) {
                     is Resource.Error<*> -> {
 
                     }
+
                     is Resource.Success<*> -> {
                         response.locationPhotos = it.data
                     }

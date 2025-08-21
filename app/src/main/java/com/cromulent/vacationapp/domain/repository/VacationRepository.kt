@@ -15,6 +15,7 @@ interface VacationRepository {
 
     suspend fun getLocationDetails(
         locationId: String,
+        forceRefresh: Boolean = false
     ): Flow<Resource<Location?>>
 
     suspend fun getLocationPhotos(locationId: String?): Flow<Resource<List<LocationPhoto>?>>
