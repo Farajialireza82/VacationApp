@@ -60,18 +60,29 @@ class GpsViewmodel @Inject constructor(
                 .searchForCoordinatesData(query)
                 .collect {
 
-                    when(it){
+                    when (it) {
                         is Resource.Error<*> -> {
                             _state.value = _state.value.copy(
                                 isSearching = false,
                                 error = it.message
                             )
                         }
+
                         is Resource.Success<List<CoordinatesData>> -> {
-                            _state.value = _state.value.copy(
-                                isSearching = false,
-                                searchResults = it.data ?: listOf()
-                            )
+
+                            if (it.data?.isEmpty() == true) {
+
+                                _state.value = _state.value.copy(
+                                    isSearching = false,
+                                    error = "No Results Found"
+                                )
+
+                            } else {
+                                _state.value = _state.value.copy(
+                                    isSearching = false,
+                                    searchResults = it.data ?: listOf()
+                                )
+                            }
                         }
                     }
 

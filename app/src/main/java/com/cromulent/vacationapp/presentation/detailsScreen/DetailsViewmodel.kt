@@ -48,7 +48,10 @@ class DetailsViewmodel @Inject constructor(
 
                     when(resource){
                         is Resource.Error<*> -> {
-                            _state.value = _state.value.copy(error = resource.message, isLoading = false)
+                            _state.value = _state.value.copy(
+                                error = resource.message,
+                                isLoading = false,
+                                location = null)
                         }
                         is Resource.Success<*> -> {
                             _state.value = _state.value.copy(location = resource.data, isLoading = false)
