@@ -27,10 +27,10 @@ class DetailsViewmodel @Inject constructor(
 
 
     init {
-        getLocationDetails(locationId)
+        getLocationDetails()
     }
 
-    fun getLocationDetails(locationId: String?) {
+    fun getLocationDetails(forceRefresh: Boolean = false) {
 
         locationId ?: return
 
@@ -43,7 +43,7 @@ class DetailsViewmodel @Inject constructor(
         viewModelScope.launch {
 
             vacationRepository
-                .getLocationDetails(locationId)
+                .getLocationDetails(locationId!!, forceRefresh)
                 .collectLatest { resource ->
 
                     when(resource){

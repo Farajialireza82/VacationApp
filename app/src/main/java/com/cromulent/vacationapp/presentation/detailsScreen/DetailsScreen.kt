@@ -71,9 +71,6 @@ fun DetailsScreen(
 
     var isAmenitiesBottomSheetVisible by remember { mutableStateOf(false) }
 
-    val coroutineScope = rememberCoroutineScope()
-
-
     var fullScreenPhotoIndex by remember { mutableStateOf<Int>(0) }
     var isPhotoFullScreen by remember { mutableStateOf(false) }
     var snackbarHostState = remember { SnackbarHostState() }
