@@ -32,6 +32,10 @@ class HomeViewmodel @Inject constructor(
         )
     }
 
+    fun clearCachedLocations(){
+        cachedLocationData = mutableMapOf()
+    }
+
 
     fun getNearbyLocations(
         category: String
