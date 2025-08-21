@@ -5,9 +5,11 @@ import com.cromulent.vacationapp.data.local.LocationCacheDao
 import com.cromulent.vacationapp.data.local.LocationPhotosCacheDao
 import com.cromulent.vacationapp.data.model.LocationPhotoListEntity
 import com.cromulent.vacationapp.data.remote.VacationApi
+import com.cromulent.vacationapp.data.remote.dto.Response
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.model.LocationPhoto
+import com.cromulent.vacationapp.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okio.IOException
@@ -21,7 +23,7 @@ class VacationRepositoryImpl(
     override suspend fun getNearbyLocations(
         latLng: String,
         category: String?
-    ): Flow<List<Location?>> {
+    ): Flow<Resource<List<Location?>>> {
 
         val locations = try {
             vacationApi.getNearbyLocations(
@@ -30,30 +32,39 @@ class VacationRepositoryImpl(
             )
         } catch (e: IOException) {
             e.printStackTrace()
-            return flow { emit(listOf<Location>()) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            return flow { listOf<Location>() }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            return flow { listOf<Location>() }
-
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
         }
         return flow {
             locations.data?.let {
-                emit(it)
+                emit(
+                    Resource.Success<List<Location?>>(data = it)
+                )
             }
         }
     }
 
-    override suspend fun getLocationDetails(locationId: String): Flow<Location?> {
+    override suspend fun getLocationDetails(locationId: String): Flow<Resource<Location?>> {
 
         val cachedLocation = getLocationFromCache(locationId)
         if (cachedLocation != null) {
             return flow {
-                emit(cachedLocation)
+                emit(
+                    Resource<Location?>.Success(cachedLocation)
+                )
             }
         }
 
@@ -61,15 +72,21 @@ class VacationRepositoryImpl(
             vacationApi.getLocationDetails(locationId = locationId)
         } catch (e: IOException) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         }
 
@@ -79,7 +96,14 @@ class VacationRepositoryImpl(
         response?.let {
 
             locationPhotos.collect {
-                response.locationPhotos = it
+                when(it){
+                    is Resource.Error<*> -> {
+
+                    }
+                    is Resource.Success<*> -> {
+                        response.locationPhotos = it.data
+                    }
+                }
             }
 
             cacheLocation(it)
@@ -87,17 +111,21 @@ class VacationRepositoryImpl(
 
 
         return flow {
-            emit(response)
+            emit(
+                Resource.Success(response)
+            )
         }
     }
 
-    override suspend fun getLocationPhotos(locationId: String?): Flow<List<LocationPhoto>?> {
+    override suspend fun getLocationPhotos(locationId: String?): Flow<Resource<List<LocationPhoto>?>> {
         if (locationId == null) return flow { }
 
         val cachedLocationPhotos = getLocationPhotosFromCache(locationId)
         if (cachedLocationPhotos != null) {
             return flow {
-                emit(cachedLocationPhotos)
+                emit(
+                    Resource.Success(cachedLocationPhotos)
+                )
             }
         }
 
@@ -105,15 +133,21 @@ class VacationRepositoryImpl(
             vacationApi.getLocationPhotos(locationId = locationId)
         } catch (e: IOException) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            return flow { emit(null) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         }
 
@@ -124,7 +158,7 @@ class VacationRepositoryImpl(
 
         return flow {
             locationPhotos.data?.let {
-                emit(it)
+                emit(Resource.Success(it))
             }
         }
     }

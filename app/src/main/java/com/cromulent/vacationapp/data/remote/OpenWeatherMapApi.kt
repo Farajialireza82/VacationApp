@@ -13,7 +13,7 @@ interface OpenWeatherMapApi {
         @Query("q") query: String,
         @Query("limit") limit: Int = 10,
         @Query("appId") appId: String = OPEN_WEATHER_MAP_API_KEY,
-    ): List<CoordinatesData>?
+    ): List<CoordinatesData>
 
 
     @GET("reverse")

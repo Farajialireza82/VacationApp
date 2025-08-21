@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.model.Location
+import com.cromulent.vacationapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,13 +27,7 @@ class HomeViewmodel @Inject constructor(
 
     private var cachedLocationData: Map<String, List<Location?>> = mutableMapOf()
 
-    init {
-        getNearbyLocations(
-            category = "hotels"
-        )
-    }
-
-    fun clearCachedLocations(){
+    fun clearCachedLocations() {
         cachedLocationData = mutableMapOf()
     }
 
@@ -47,32 +42,73 @@ class HomeViewmodel @Inject constructor(
         )
 
         if (cachedLocationData.contains(category)) {
-            _state.value = _state.value.copy(locations = cachedLocationData[category]!!, isLoading = false)
+            _state.value =
+                _state.value.copy(locations = cachedLocationData[category]!!, isLoading = false)
             return
         }
 
 
-        var locations: List<Location?> = listOf()
         viewModelScope.launch {
             vacationRepository
                 .getNearbyLocations(
                     latLng = currentCoordinates.value?.getCoordinatesString().toString(),
                     category = category
-                ).collectLatest {
-                    locations = it
-                }
-            locations.forEach { location ->
+                ).collectLatest { locationsResource ->
 
-                vacationRepository
-                    .getLocationPhotos(location?.locationId).collectLatest { photos ->
-                        val index = locations.indexOf(location)
-                        locations[index]?.locationPhotos = photos
+                    when (locationsResource) {
+                        is Resource.Error<*> -> {
+
+                            _state.value = _state.value.copy(
+                                error = locationsResource.message,
+                                isLoading = false
+                            )
+
+                        }
+
+                        is Resource.Success<*> -> {
+                            var locations = locationsResource.data ?: listOf()
+
+                            locations.forEach { location ->
+
+                                vacationRepository
+                                    .getLocationPhotos(location?.locationId)
+                                    .collectLatest { photoResource ->
+
+                                        when (photoResource) {
+                                            is Resource.Error<*> -> {
+                                                _state.value = _state.value.copy(
+                                                    error = photoResource.message
+                                                )
+                                            }
+
+                                            is Resource.Success<*> -> {
+                                                val index = locations.indexOf(location)
+                                                locations[index]?.locationPhotos = photoResource.data
+
+                                            }
+                                        }
+
+                                    }
+                            }
+
+                            locations =
+                                locations.sortedBy { it?.locationPhotos?.isEmpty() }
+
+
+                            cachedLocationData =
+                                cachedLocationData + (category to locations)
+
+                            _state.value = _state.value.copy(
+                                locations = locations,
+                                isLoading = false
+                            )
+                        }
                     }
-            }
+                    _state.value = _state.value.copy(isLoading = false)
 
-            locations = locations.sortedBy { it?.locationPhotos?.isEmpty() }
-            cachedLocationData = cachedLocationData + (category to locations)
-            _state.value = _state.value.copy(locations = locations, isLoading = false)
+
+                }
+
         }
     }
 

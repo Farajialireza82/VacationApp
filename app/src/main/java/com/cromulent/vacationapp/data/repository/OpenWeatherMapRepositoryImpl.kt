@@ -20,6 +20,7 @@ import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.util.Constants
 import com.cromulent.vacationapp.util.Constants.GPS_SETTINGS
 import com.cromulent.vacationapp.util.Constants.USER_SETTINGS
+import com.cromulent.vacationapp.util.Resource
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +43,7 @@ class OpenWeatherMapRepositoryImpl(
     override suspend fun searchForCoordinatesData(
         query: String,
         limit: Int
-    ): Flow<List<CoordinatesData?>> {
+    ): Flow<Resource<List<CoordinatesData>>> {
 
         val coordinatesData = try {
             openWeatherMapApi.searchForCoordinatesData(
@@ -51,19 +52,29 @@ class OpenWeatherMapRepositoryImpl(
             )
         } catch (e: IOException) {
             e.printStackTrace()
-            return flow { emit(listOf<CoordinatesData>()) }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            return flow { listOf<CoordinatesData>() }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            return flow { listOf<CoordinatesData>() }
+            return flow {
+                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+            }
 
         }
         return flow {
-            emit(coordinatesData ?: listOf())
+            emit(
+                Resource.Success(
+                    coordinatesData
+                )
+            )
         }
 
     }

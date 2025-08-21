@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.domain.repository.OpenWeatherMapRepository
 import com.cromulent.vacationapp.model.CoordinatesData
+import com.cromulent.vacationapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,10 +60,22 @@ class GpsViewmodel @Inject constructor(
                 .searchForCoordinatesData(query)
                 .collect {
 
-                    _state.value = _state.value.copy(
-                        isSearching = false,
-                        searchResults = it
-                    )
+                    when(it){
+                        is Resource.Error<*> -> {
+                            _state.value = _state.value.copy(
+                                isSearching = false,
+                                error = it.message
+                            )
+                        }
+                        is Resource.Success<List<CoordinatesData>> -> {
+                            _state.value = _state.value.copy(
+                                isSearching = false,
+                                searchResults = it.data ?: listOf()
+                            )
+                        }
+                    }
+
+
                 }
         }
 
