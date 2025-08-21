@@ -56,7 +56,7 @@ class HomeViewmodel @Inject constructor(
         viewModelScope.launch {
             vacationRepository
                 .getNearbyLocations(
-                    latLng = currentCoordinates.value.getCoordinatesString(),
+                    latLng = currentCoordinates.value?.getCoordinatesString().toString(),
                     category = category
                 ).collectLatest {
                     locations = it
