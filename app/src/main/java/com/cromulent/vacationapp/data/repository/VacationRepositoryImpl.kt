@@ -33,25 +33,25 @@ class VacationRepositoryImpl(
         } catch (e: IOException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: HttpException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
         }
         return flow {
             locations.data?.let {
                 emit(
-                    Resource.Success<List<Location?>>(data = it)
+                    Resource.Success(data = it)
                 )
             }
         }
@@ -73,19 +73,19 @@ class VacationRepositoryImpl(
         } catch (e: IOException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: HttpException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         }
@@ -134,19 +134,19 @@ class VacationRepositoryImpl(
         } catch (e: IOException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: HttpException) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
             return flow {
-                Resource.Error<List<Location?>>(e.message ?: "Something went wrong")
+                emit(Resource.Error(e.message ?: "Something went wrong"))
             }
 
         }

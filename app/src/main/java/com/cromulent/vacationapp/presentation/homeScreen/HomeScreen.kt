@@ -50,7 +50,7 @@ fun HomeScreen(
     var snackbarHostState  = remember{ SnackbarHostState() }
 
     LaunchedEffect(selectedCategory) {
-        viewmodel.getNearbyLocations(selectedCategory.key)
+//        viewmodel.getNearbyLocations(selectedCategory.key)
     }
 
     LaunchedEffect(currentCoordinates.value) {
@@ -83,8 +83,9 @@ fun HomeScreen(
                     .padding(horizontal = 24.dp),
                 locationText = currentCoordinates.value?.getTitle() ?: "NO TITLE",
                 onRefreshClicked = {
-                    viewmodel.clearCachedLocations()
-                    viewmodel.getNearbyLocations(selectedCategory.key)
+                    viewmodel.generateError()
+//                    viewmodel.clearCachedLocations()
+//                    viewmodel.getNearbyLocations(selectedCategory.key)
                 },
                 onLocationClicked = {
                     openLocationPickerScreen()

@@ -18,6 +18,7 @@ import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.util.Constants
 import com.cromulent.vacationapp.util.Constants.GPS_SETTINGS
 import com.cromulent.vacationapp.util.Constants.USER_SETTINGS
+import com.cromulent.vacationapp.util.Resource
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -76,12 +77,28 @@ class GpsRepositoryImpl(
                         location.longitude.toString(),
                         limit = 1
                     ).collect {
-                        val coordinates = it[0] ?: CoordinatesData(
-                            location.latitude.toString(),
-                            location.longitude.toString()
-                        )
-                        saveCurrentCoordinates(coordinates)
-                        onUserLocated(coordinates)
+
+                        when(it){
+                            is Resource.Error<*> -> {
+                                val coordinates = CoordinatesData(
+                                    location.latitude.toString(),
+                                    location.longitude.toString(),
+                                    name = "Current Location"
+                                )
+                                saveCurrentCoordinates(coordinates)
+                                onUserLocated(coordinates)
+                            }
+                            is Resource.Success<*> -> {
+
+                                val coordinates = it.data?.get(0) ?: CoordinatesData(
+                                    location.latitude.toString(),
+                                    location.longitude.toString()
+                                )
+                                saveCurrentCoordinates(coordinates)
+                                onUserLocated(coordinates)
+
+                            }
+                        }
                     }
                 }
             }
@@ -91,7 +108,7 @@ class GpsRepositoryImpl(
         latitude: String,
         longitude: String,
         limit: Int = 1
-    ): Flow<List<CoordinatesData?>> {
+    ): Flow<Resource<List<CoordinatesData?>>> {
 
         val coordinatesData = try {
             openWeatherMapApi.searchForCoordinatesName(
@@ -101,19 +118,26 @@ class GpsRepositoryImpl(
             )
         } catch (e: IOException) {
             e.printStackTrace()
-            return flow { emit(listOf<CoordinatesData>()) }
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong", null))
+            }
 
         } catch (e: HttpException) {
             e.printStackTrace()
-            return flow { listOf<CoordinatesData>() }
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong", null))
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
-            return flow { listOf<CoordinatesData>() }
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong", null))
+            }
 
         }
         return flow {
-            emit(coordinatesData ?: listOf())
+            emit(
+                Resource.Success(coordinatesData ?: listOf()))
         }
 
     }
