@@ -50,9 +50,10 @@ fun HomeScreen(
         viewmodel.getNearbyLocations(selectedCategory.key)
     }
 
-//    LaunchedEffect(currentCoordinates) {
-//        viewmodel.getNearbyLocations(selectedCategory.key)
-//    }
+    LaunchedEffect(currentCoordinates.value) {
+        viewmodel.clearCachedLocations()
+        viewmodel.getNearbyLocations(selectedCategory.key)
+    }
 
     LaunchedEffect(state.value.error) {
         if (state.value.error?.isNotEmpty() == true) {
