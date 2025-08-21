@@ -42,11 +42,17 @@ fun HomeScreen(
 ) {
 
     val state = viewmodel.state.collectAsState()
+    val currentCoordinates = viewmodel.currentCoordinates.collectAsState()
     var selectedCategory by rememberSaveable { mutableStateOf(CATEGORIES[0]) }
     var snackbarHostState  = remember{ SnackbarHostState() }
 
     LaunchedEffect(selectedCategory) {
-        viewmodel.getNearbyLocations("42.3455,-71.10767", selectedCategory.key)
+        viewmodel.getNearbyLocations(selectedCategory.key)
+    }
+
+    LaunchedEffect(currentCoordinates.value) {
+        viewmodel.clearCachedLocations()
+        viewmodel.getNearbyLocations(selectedCategory.key)
     }
 
     LaunchedEffect(state.value.error) {
@@ -57,7 +63,7 @@ fun HomeScreen(
                 actionLabel = "Refresh",
                duration =  SnackbarDuration.Short)
             if (result == SnackbarResult.ActionPerformed) {
-                viewmodel.getNearbyLocations("42.3455,-71.10767", selectedCategory.key)
+                viewmodel.getNearbyLocations(selectedCategory.key)
             }
         }
     }
@@ -70,7 +76,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(horizontal = 24.dp),
-                locationText = "Aspen, USA",
+                locationText = currentCoordinates.value.getTitle(),
                 onLocationClicked = openLocationPickerScreen
             )
         },
@@ -86,7 +92,9 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 18.dp),
                 hint = "Find things to do"
-            )
+            ){
+
+            }
 
             Spacer(Modifier.size(18.dp))
 
