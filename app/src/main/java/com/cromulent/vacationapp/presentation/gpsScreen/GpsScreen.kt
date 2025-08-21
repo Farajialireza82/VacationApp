@@ -2,6 +2,7 @@ package com.cromulent.vacationapp.presentation.gpsScreen
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,10 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,8 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
+import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.presentation.components.SearchField
 import com.cromulent.vacationapp.presentation.components.TraveloButton
+import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.openAppSettings
 import com.cromulent.vacationapp.util.rememberLocationPermissionHandler
 
@@ -137,15 +142,22 @@ fun GpsScreen(
                 }
             } else {
 
-                LazyRow(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(horizontal = 8.dp)
                 ) {
                     items(state.value.searchResults) {
 
-                        Text(
-                            text = it?.name ?: "NULL"
-                        )
+                        it ?: return@items
+
+                        CoordinatesItem(
+                            coordinatesData = it
+                        ) {
+                            viewmodel.setCurrentCoordinates(it)
+                        }
+
+                        Spacer(Modifier.size(8.dp))
 
                     }
                 }
@@ -222,9 +234,74 @@ fun GpsScreenTopBar(
 
 }
 
+@Composable
+fun CoordinatesItem(
+    modifier: Modifier = Modifier,
+    coordinatesData: CoordinatesData,
+    onClick: () -> Unit
+) {
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            }
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+
+        Icon(
+            modifier = Modifier
+                .size(48.dp)
+                .background(
+                    color = colorResource(R.color.primary),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(10.dp),
+            tint = Color.White,
+            imageVector = Icons.Rounded.LocationOn,
+            contentDescription = null
+        )
+
+        Column(
+            Modifier.padding(horizontal = 8.dp)
+        ) {
+
+            Text(
+                text = coordinatesData.name ?: "",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Text(
+                text = coordinatesData.getAddressTitle(),
+                fontSize = 12.sp
+            )
+        }
+
+    }
+
+}
+
 @Preview
 @Composable
 private fun GpsScreenPrev() {
+
+    VacationAppTheme {
+        CoordinatesItem(
+
+            coordinatesData = CoordinatesData(
+                latitude = "22",
+                longitude = "32",
+                country = "Iran",
+                state = "Tehran",
+                name = "Varamin"
+            )
+        ) {}
+
+    }
 
 
 }
