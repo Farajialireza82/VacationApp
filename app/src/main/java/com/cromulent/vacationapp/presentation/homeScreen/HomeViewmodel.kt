@@ -31,6 +31,13 @@ class HomeViewmodel @Inject constructor(
         cachedLocationData = mutableMapOf()
     }
 
+    fun generateError(){
+
+        _state.value =
+            _state.value.copy(error = "Error occurred")
+
+    }
+
 
     fun getNearbyLocations(
         category: String
