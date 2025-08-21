@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun SearchField(
@@ -40,6 +42,13 @@ fun SearchField(
 ) {
 
     var text by remember { mutableStateOf("") }
+
+    LaunchedEffect(text) {
+        if (text.isNotBlank()) {
+            delay(500)
+            onSearch(text)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -100,6 +109,6 @@ private fun SearchFieldPrev() {
     VacationAppTheme {
         SearchField(
             hint = "Find things to do"
-        ){}
+        ) {}
     }
 }
