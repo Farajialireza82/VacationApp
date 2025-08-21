@@ -52,4 +52,22 @@ data class CoordinatesData(
             }
         }
     }
+
+    fun getAddressTitle(): String {
+        return when {
+            // Both state and country available
+            !state.isNullOrBlank() && !country.isNullOrBlank() -> {
+                "$state, $country"
+            }
+            // Only state available
+            !state.isNullOrBlank() && country.isNullOrBlank() -> {
+                state
+            }
+            // Only country available
+            state.isNullOrBlank() && !country.isNullOrBlank() -> {
+                country
+            }
+            else  -> "NULL"
+        }
+    }
 }
