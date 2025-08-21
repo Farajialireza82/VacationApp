@@ -24,8 +24,14 @@ android {
 
         buildConfigField(
             "String",
-            "API_KEY",
-            "\"${project.findProperty("API_KEY")}\""
+            "TRIP_ADVISOR_API_KEY",
+            "\"${project.findProperty("TRIP_ADVISOR_API_KEY")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "OPEN_WEATHER_MAP_API_KEY",
+            "\"${project.findProperty("OPEN_WEATHER_MAP_API_KEY")}\""
         )
     }
 
@@ -75,14 +81,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.androidx.material.icons.extended)
 
-
     //Splash screen
-    implementation ("androidx.core:core-splashscreen:1.0.0")
+    implementation (libs.androidx.core.splashscreen)
 
+    //Google Play location services
+    implementation (libs.play.services.location)
 
     //Datastore
     implementation (libs.androidx.datastore.preferences)
-
 
     //Compose Navigation
     implementation (libs.androidx.navigation.compose)
@@ -92,14 +98,11 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
-
     //Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation (libs.converter.scalars)
-
-
 
     //Coil
     implementation(libs.coil.compose)

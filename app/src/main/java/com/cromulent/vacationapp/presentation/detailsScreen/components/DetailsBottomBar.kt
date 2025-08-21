@@ -24,10 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
-import com.cromulent.vacationapp.model.Location
-import com.cromulent.vacationapp.presentation.onBoardingScreen.components.OnBoardingButton
+import com.cromulent.vacationapp.presentation.components.TraveloButton
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
-import com.cromulent.vacationapp.util.openWebsite
 
 @Composable
 fun DetailsBottomBar(
@@ -69,7 +67,7 @@ fun DetailsBottomBar(
             )
         }
 
-        OnBoardingButton(
+        TraveloButton(
             modifier = Modifier
                 .padding(horizontal = 20.dp, vertical = 24.dp)
                 .weight(2f)
@@ -80,7 +78,7 @@ fun DetailsBottomBar(
                 )
                 .clip(RoundedCornerShape(16.dp)),
             text = "Visit Website",
-            icon = Icons.AutoMirrored.Default.ArrowForward,
+            trailingIcon = Icons.AutoMirrored.Default.ArrowForward,
         ) {
             openWebsite()
         }

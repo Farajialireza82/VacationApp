@@ -7,10 +7,16 @@ import com.cromulent.vacationapp.data.manager.LocalUserManagerImpl
 import com.cromulent.vacationapp.data.remote.VacationApi
 import com.cromulent.vacationapp.data.local.LocationDatabase
 import com.cromulent.vacationapp.data.local.LocationTypeConvertor
+import com.cromulent.vacationapp.data.remote.OpenWeatherMapApi
+import com.cromulent.vacationapp.data.repository.GpsRepositoryImpl
+import com.cromulent.vacationapp.data.repository.OpenWeatherMapRepositoryImpl
 import com.cromulent.vacationapp.data.repository.VacationRepositoryImpl
+import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.domain.manager.LocalUserManager
+import com.cromulent.vacationapp.domain.repository.OpenWeatherMapRepository
 import com.cromulent.vacationapp.domain.repository.VacationRepository
-import com.cromulent.vacationapp.util.Constants.BASE_URL
+import com.cromulent.vacationapp.util.Constants
+import com.cromulent.vacationapp.util.Constants.TRIP_ADVISOR_URL
 import com.cromulent.vacationapp.util.Constants.LOCATION_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
@@ -49,10 +55,23 @@ object AppModule {
         return Retrofit.Builder()
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl(TRIP_ADVISOR_URL)
             .client(client)
             .build()
             .create(VacationApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOpenWeatherMapApi(): OpenWeatherMapApi {
+
+        return Retrofit.Builder()
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(Constants.OPEN_WEATHER_MAP_URL)
+            .client(client)
+            .build()
+            .create(OpenWeatherMapApi::class.java)
     }
 
     @Provides
@@ -64,14 +83,27 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGpsRepository(
+        application: Application,
+        openWeatherMapApi: OpenWeatherMapApi
+    ): GpsRepository = GpsRepositoryImpl(application, openWeatherMapApi)
+
+    @Provides
+    @Singleton
+    fun provideOpenWeatherMapRepository(
+        openWeatherMapApi: OpenWeatherMapApi
+    ): OpenWeatherMapRepository = OpenWeatherMapRepositoryImpl(openWeatherMapApi)
+
+    @Provides
+    @Singleton
     fun provideLocationDatabase(
         application: Application
     ): LocationDatabase {
         return Room.databaseBuilder(
-                context = application,
-                klass = LocationDatabase::class.java,
-                name = LOCATION_DATABASE_NAME
-            ).addTypeConverter(LocationTypeConvertor())
+            context = application,
+            klass = LocationDatabase::class.java,
+            name = LOCATION_DATABASE_NAME
+        ).addTypeConverter(LocationTypeConvertor())
             .fallbackToDestructiveMigration(false)
             .build()
     }
@@ -81,7 +113,6 @@ object AppModule {
     fun provideLocationCacheDao(
         newsDatabase: LocationDatabase
     ): LocationCacheDao = newsDatabase.locationCacheDao
-
 
 
 }

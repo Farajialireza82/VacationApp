@@ -1,4 +1,4 @@
-package com.cromulent.vacationapp.presentation.onBoardingScreen.components
+package com.cromulent.vacationapp.presentation.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,10 +24,12 @@ import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 
 @Composable
-fun OnBoardingButton(
+fun TraveloButton(
     modifier: Modifier = Modifier,
     text: String = "Explore",
-    icon: ImageVector? = null,
+    leadingIcon: ImageVector? = null,
+    trailingIcon: ImageVector? = null,
+    isLoading: Boolean = false,
     onClick: () -> Unit,
 ) {
 
@@ -38,30 +39,51 @@ fun OnBoardingButton(
             .height(60.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(R.color.primary)
+            containerColor = colorResource(R.color.primary),
+            disabledContainerColor = colorResource(R.color.primary)
         ),
+        enabled = isLoading.not(),
         onClick = onClick
     ) {
 
-        Row {
-            Text(
-                modifier = Modifier
-                    .animateContentSize(),
-                text = text,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                fontSize = 18.sp
+        if (isLoading) {
+
+            CircularProgressIndicator(
+                color = Color.White
             )
 
-            icon?.let {
+        } else {
 
+            Row {
 
-                Spacer(Modifier.size(10.dp))
+                leadingIcon?.let {
 
-                Icon(
-                    imageVector = it,
-                    contentDescription = null
+                    Icon(
+                        imageVector = it,
+                        contentDescription = null
+                    )
+                    Spacer(Modifier.size(10.dp))
+                }
+
+                Text(
+                    modifier = Modifier
+                        .animateContentSize(),
+                    text = text,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    fontSize = 18.sp
                 )
+
+                trailingIcon?.let {
+
+
+                    Spacer(Modifier.size(10.dp))
+
+                    Icon(
+                        imageVector = it,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
@@ -72,7 +94,8 @@ fun OnBoardingButton(
 @Preview
 @Composable
 private fun PrevOnBoardingButton() {
-    OnBoardingButton(
+    TraveloButton(
+        isLoading = true,
         onClick = {}
     )
 }
