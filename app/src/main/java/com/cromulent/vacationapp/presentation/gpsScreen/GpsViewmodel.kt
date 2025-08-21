@@ -1,0 +1,34 @@
+package com.cromulent.vacationapp.presentation.gpsScreen
+
+import android.annotation.SuppressLint
+import androidx.lifecycle.ViewModel
+import com.cromulent.vacationapp.domain.manager.GpsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+
+@HiltViewModel
+class GpsViewmodel @Inject constructor(
+    val gpsRepository: GpsRepository
+) : ViewModel() {
+
+    private val _state = MutableStateFlow<GpsState>(GpsState())
+    val state: StateFlow<GpsState> = _state.asStateFlow()
+
+    val currentCoordinates = gpsRepository.currentCoordinates
+
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocation() {
+        _state.value = _state.value.copy(
+            isLocating = true
+        )
+        gpsRepository.locateUser{
+            _state.value = _state.value.copy(
+                isLocating = true
+            )
+        }
+    }
+}

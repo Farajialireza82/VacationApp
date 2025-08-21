@@ -1,8 +1,6 @@
 package com.cromulent.vacationapp.presentation.gpsScreen
 
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,14 +40,20 @@ import com.cromulent.vacationapp.util.rememberLocationPermissionHandler
 
 @Composable
 fun GpsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewmodel: GpsViewmodel
 ) {
+
+    val state = viewmodel.state.collectAsState()
+    val currentCoordinates = viewmodel.currentCoordinates.collectAsState()
 
     val context = LocalContext.current
 
     val requestLocationPermission = rememberLocationPermissionHandler(
-        onPermissionGranted = {  },
-        onPermissionDenied = {  },
+        onPermissionGranted = {
+            viewmodel.getCurrentLocation()
+        },
+        onPermissionDenied = { },
         onNeedSettings = {
             Toast.makeText(context, "GPS permission needed", Toast.LENGTH_SHORT).show()
             openAppSettings(context)
@@ -66,6 +71,7 @@ fun GpsScreen(
                         .background(color = colorResource(R.color.background_tertiary))
                         .padding(20.dp)
                         .windowInsetsPadding(WindowInsets.systemBars),
+                    selectedLocationName = currentCoordinates.value.getCoordinatesString(),
                     locateUser = {
                         requestLocationPermission()
                     }
@@ -118,7 +124,9 @@ fun GpsScreen(
 @Composable
 fun GpsScreenTopBar(
     modifier: Modifier = Modifier,
-    locateUser: () -> Unit) {
+    selectedLocationName: String,
+    locateUser: () -> Unit
+) {
 
     Column(modifier) {
 
@@ -153,7 +161,7 @@ fun GpsScreenTopBar(
                 Spacer(Modifier.size(2.dp))
 
                 Text(
-                    text = "Aspen, USA",
+                    text = selectedLocationName,
                     fontSize = 12.sp
                 )
             }
@@ -178,7 +186,5 @@ fun GpsScreenTopBar(
 @Preview
 @Composable
 private fun GpsScreenPrev() {
-
-    GpsScreen()
 
 }

@@ -7,7 +7,9 @@ import com.cromulent.vacationapp.data.manager.LocalUserManagerImpl
 import com.cromulent.vacationapp.data.remote.VacationApi
 import com.cromulent.vacationapp.data.local.LocationDatabase
 import com.cromulent.vacationapp.data.local.LocationTypeConvertor
+import com.cromulent.vacationapp.data.repository.GpsRepositoryImpl
 import com.cromulent.vacationapp.data.repository.VacationRepositoryImpl
+import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.domain.manager.LocalUserManager
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.util.Constants.BASE_URL
@@ -61,6 +63,12 @@ object AppModule {
         vacationApi: VacationApi,
         locationCacheDao: LocationCacheDao
     ): VacationRepository = VacationRepositoryImpl(vacationApi, locationCacheDao)
+
+    @Provides
+    @Singleton
+    fun provideVGpsRepository(
+        application: Application
+    ): GpsRepository = GpsRepositoryImpl(application)
 
     @Provides
     @Singleton

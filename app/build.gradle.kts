@@ -78,6 +78,9 @@ dependencies {
     //Splash screen
     implementation (libs.androidx.core.splashscreen)
 
+    //Google Play location services
+    implementation (libs.play.services.location)
+
     //Datastore
     implementation (libs.androidx.datastore.preferences)
 

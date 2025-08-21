@@ -2,6 +2,7 @@ package com.cromulent.vacationapp.presentation.homeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.domain.repository.VacationRepository
 import com.cromulent.vacationapp.model.Location
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,25 +15,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewmodel @Inject constructor(
-    private val vacationRepository: VacationRepository
+    private val vacationRepository: VacationRepository,
+    val gpsRepository: GpsRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<HomeState>(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
+    val currentCoordinates = gpsRepository.currentCoordinates
+
     private var cachedLocationData: Map<String, List<Location?>> = mutableMapOf()
 
     init {
         getNearbyLocations(
-            latLng = "42.3455,-71.10767",
             category = "hotels"
         )
     }
 
 
     fun getNearbyLocations(
-        latLng: String,
-        category: String,
+        category: String
     ) {
 
         _state.value = _state.value.copy(
@@ -50,18 +52,18 @@ class HomeViewmodel @Inject constructor(
         viewModelScope.launch {
             vacationRepository
                 .getNearbyLocations(
-                    latLng = latLng,
+                    latLng = currentCoordinates.value.getCoordinatesString(),
                     category = category
                 ).collectLatest {
                     locations = it
                 }
             locations.forEach { location ->
 
-                vacationRepository
-                    .getLocationPhotos(location?.locationId).collectLatest { photos ->
-                        val index = locations.indexOf(location)
-                        locations[index]?.locationPhotos = photos
-                    }
+//                vacationRepository
+//                    .getLocationPhotos(location?.locationId).collectLatest { photos ->
+//                        val index = locations.indexOf(location)
+//                        locations[index]?.locationPhotos = photos
+//                    }
             }
 
             locations = locations.sortedBy { it?.locationPhotos?.isEmpty() }
