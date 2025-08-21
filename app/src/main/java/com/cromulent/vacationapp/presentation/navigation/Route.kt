@@ -11,6 +11,7 @@ sealed class Route(
     object HomeScreen: Route(route = "homeScreen")
     object DetailsScreen: Route(route = "detailsScreen")
     object GpsScreen: Route(route = "GpsScreen")
+    object SearchScreen: Route(route = "SearchScreen")
 
 
 

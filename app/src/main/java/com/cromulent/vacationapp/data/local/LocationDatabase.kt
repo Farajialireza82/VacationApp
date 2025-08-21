@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import com.cromulent.vacationapp.data.model.LocationPhotoListEntity
 import com.cromulent.vacationapp.model.Location
 
-@Database(entities = [Location::class, LocationPhotoListEntity::class], version = 2)
+@Database(entities = [Location::class, LocationPhotoListEntity::class], version = 3)
 @TypeConverters(LocationTypeConvertor::class)
 abstract class LocationDatabase: RoomDatabase() {
 

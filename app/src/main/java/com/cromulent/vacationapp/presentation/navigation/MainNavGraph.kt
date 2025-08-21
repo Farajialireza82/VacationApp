@@ -17,6 +17,8 @@ import com.cromulent.vacationapp.presentation.homeScreen.HomeScreen
 import com.cromulent.vacationapp.presentation.homeScreen.HomeViewmodel
 import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingScreen
 import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingViewModel
+import com.cromulent.vacationapp.presentation.searchScreen.SearchScreen
+import com.cromulent.vacationapp.presentation.searchScreen.SearchViewmodel
 import kotlin.collections.listOf
 
 @Composable
@@ -64,6 +66,9 @@ fun MainNavGraph(
                     },
                     openLocationPickerScreen = {
                         navController.navigate(Route.GpsScreen.route)
+                    },
+                    openSearchScreen = {
+                        navController.navigate(Route.SearchScreen.route)
                     }
                 )
             }
@@ -87,6 +92,17 @@ fun MainNavGraph(
                 GpsScreen(
                     viewmodel = viewmodel
                 )
+            }
+
+            composable(
+                route = Route.SearchScreen.route,
+            ) {
+                val viewmodel = hiltViewModel<SearchViewmodel>()
+                SearchScreen(
+                    viewmodel = viewmodel
+                ){ locationId ->
+                    navController.navigate(Route.DetailsScreen.route + "/" + locationId)
+                }
             }
         }
     }

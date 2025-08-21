@@ -56,20 +56,21 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewmodel: HomeViewmodel,
     openDetailsScreen: (String) -> Unit,
-    openLocationPickerScreen: () -> Unit
+    openLocationPickerScreen: () -> Unit,
+    openSearchScreen: () -> Unit,
 ) {
 
     val state = viewmodel.state.collectAsState()
     val currentCoordinates = viewmodel.currentCoordinates.collectAsState()
     var selectedCategory by rememberSaveable { mutableStateOf(CATEGORIES[0]) }
-    var snackbarHostState  = remember{ SnackbarHostState() }
+    var snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(selectedCategory) {
         viewmodel.getNearbyLocations(selectedCategory.key)
     }
 
     LaunchedEffect(currentCoordinates.value) {
-        if(currentCoordinates.value == null){
+        if (currentCoordinates.value == null) {
             openLocationPickerScreen()
             return@LaunchedEffect
         }
@@ -77,11 +78,12 @@ fun HomeScreen(
 
     LaunchedEffect(state.value.error) {
         if (state.value.error?.isNotEmpty() == true) {
-           val result =  snackbarHostState.showSnackbar(
+            val result = snackbarHostState.showSnackbar(
                 message = state.value.error ?: "Something went wrong",
                 withDismissAction = true,
                 actionLabel = "Refresh",
-               duration =  SnackbarDuration.Short)
+                duration = SnackbarDuration.Short
+            )
             if (result == SnackbarResult.ActionPerformed) {
                 viewmodel.getNearbyLocations(selectedCategory.key)
             }
@@ -117,10 +119,10 @@ fun HomeScreen(
             SearchField(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 18.dp),
-                hint = "Find things to do"
-            ){
-
-            }
+                hint = "Find things to do",
+                isSearchable = false,
+                onClick = openSearchScreen
+            )
 
             Spacer(Modifier.size(18.dp))
 
@@ -142,7 +144,7 @@ fun HomeScreen(
 
             Spacer(Modifier.size(32.dp))
 
-            if(state.value.locations.isEmpty() && state.value.isLoading.not()){
+            if (state.value.locations.isEmpty() && state.value.isLoading.not()) {
 
                 Column(
                     Modifier
@@ -185,8 +187,7 @@ fun HomeScreen(
                     )
                 }
 
-            }
-            else {
+            } else {
 
                 FullLocationCardList(
                     modifier = Modifier

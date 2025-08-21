@@ -3,6 +3,7 @@ package com.cromulent.vacationapp.presentation.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +40,12 @@ import kotlinx.coroutines.delay
 fun SearchField(
     modifier: Modifier = Modifier,
     hint: String,
-    onSearch: (String) -> Unit
+    isSearchable: Boolean = true,
+    onClick: () -> Unit = {},
+    onSearch: (String) -> Unit = {},
 ) {
 
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(text) {
         if (text.isNotBlank()) {
@@ -53,13 +57,24 @@ fun SearchField(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clip(
+                shape = RoundedCornerShape(24.dp)
+            )
             .background(
                 color = colorResource(R.color.background_secondary),
                 shape = RoundedCornerShape(24.dp)
             )
+            .clickable(
+                enabled = isSearchable.not(),
+                onClick = {
+                    onClick()
+                }
+            )
+
     ) {
         TextField(
             value = text,
+            enabled = isSearchable,
             onValueChange = { text = it },
             maxLines = 1,
             keyboardOptions = KeyboardOptions(
@@ -99,7 +114,68 @@ fun SearchField(
         )
     }
 
-//
+}
+
+
+@Composable
+fun SearchField(
+    modifier: Modifier = Modifier,
+    text: String,
+    hint: String,
+    onValueChanged: (String) -> Unit,
+    onSearchClicked: () -> Unit,
+) {
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(
+                shape = RoundedCornerShape(24.dp)
+            )
+            .background(
+                color = colorResource(R.color.background_secondary),
+                shape = RoundedCornerShape(24.dp)
+            )
+
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onValueChanged,
+            maxLines = 1,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = { onSearchClicked() }
+            ),
+            placeholder = {
+                Text(
+                    text = hint,
+                    fontSize = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = colorResource(R.color.subtitle),
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_search),
+                    tint = colorResource(R.color.subtitle),
+                    contentDescription = null
+                )
+            },
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                errorContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            )
+        )
+    }
 
 }
 
