@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -94,7 +95,8 @@ fun GpsScreen(
                         .background(color = colorResource(R.color.background_tertiary))
                         .padding(20.dp)
                         .windowInsetsPadding(WindowInsets.systemBars),
-                    selectedLocationName = currentCoordinates.value.getTitle(),
+                    selectedLocationName = currentCoordinates.value?.getTitle()
+                        ?: "No location selected yet",
                     isLocating = state.value.isLocating,
                     locateUser = {
                         requestLocationPermission()
@@ -150,7 +152,14 @@ fun GpsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Search results will appear here",
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp)
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = if (currentCoordinates.value == null)
+                            "Select your travel destination and start your journey"
+                        else
+                            "Search results will appear here",
                         color = colorResource(R.color.subtitle)
                     )
                 }

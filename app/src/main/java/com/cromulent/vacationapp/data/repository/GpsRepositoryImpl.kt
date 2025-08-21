@@ -41,7 +41,7 @@ class GpsRepositoryImpl(
 
     private val _currentCoordinates =
         MutableStateFlow<CoordinatesData>(CoordinatesData(latitude = "", longitude = ""))
-    override val currentCoordinates: StateFlow<CoordinatesData> = _currentCoordinates.asStateFlow()
+    override val currentCoordinates: StateFlow<CoordinatesData?> = _currentCoordinates.asStateFlow()
 
     private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

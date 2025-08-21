@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface GpsRepository {
 
-    val currentCoordinates: StateFlow<CoordinatesData>
+    val currentCoordinates: StateFlow<CoordinatesData?>
 
     fun locateUser(onUserLocated:(CoordinatesData) -> Unit)
 
