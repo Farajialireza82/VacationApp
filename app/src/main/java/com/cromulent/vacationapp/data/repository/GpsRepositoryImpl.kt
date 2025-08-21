@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.mutablePreferencesOf
 import androidx.datastore.preferences.core.preferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import coil.network.HttpException
+import com.cromulent.vacationapp.data.remote.OpenWeatherMapApi
 import com.cromulent.vacationapp.domain.manager.GpsRepository
 import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.util.Constants
@@ -28,10 +30,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import okio.IOException
 import java.util.Locale
 
 class GpsRepositoryImpl(
-    val application: Application
+    val application: Application,
+    val openWeatherMapApi: OpenWeatherMapApi
 ) : GpsRepository {
 
     private val _currentCoordinates =
@@ -58,33 +62,62 @@ class GpsRepositoryImpl(
         .getFusedLocationProviderClient(application)
 
     @SuppressLint("MissingPermission")
-    override fun locateUser(onUserLocated: () -> Unit) {
+    override fun locateUser(onUserLocated: (CoordinatesData) -> Unit) {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
-                val coordinates = CoordinatesData(
-                    latitude = location.latitude.toString(),
-                    longitude = location.longitude.toString()
-                )
-                val locationString =
-                    "${location.latitude.toString()},${location.longitude.toString()}"
-                _currentCoordinates.value = coordinates
-
-
-                val geoCoder = Geocoder(application, Locale.getDefault())
-                val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
-                val cityName = addresses?.get(0)?.getAddressLine(0)
-                val countryName = addresses?.get(0)?.getAddressLine(1)
-
 
                 repositoryScope.launch {
-                    saveCurrentCoordinates(coordinates)
-                }
 
-                onUserLocated()
+                    searchForCoordinatesName(
+                        location.latitude.toString(),
+                        location.longitude.toString(),
+                        limit = 1
+                    ).collect {
+                        val coordinates = it[0] ?: CoordinatesData(
+                            location.latitude.toString(),
+                            location.longitude.toString()
+                        )
+                        saveCurrentCoordinates(coordinates)
+                        onUserLocated(coordinates)
+                    }
+                }
             }
     }
 
+    suspend fun searchForCoordinatesName(
+        latitude: String,
+        longitude: String,
+        limit: Int = 1
+    ): Flow<List<CoordinatesData?>> {
+
+        val coordinatesData = try {
+            openWeatherMapApi.searchForCoordinatesName(
+                latitude = latitude,
+                longitude = longitude,
+                limit = limit
+            )
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return flow { emit(listOf<CoordinatesData>()) }
+
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            return flow { listOf<CoordinatesData>() }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return flow { listOf<CoordinatesData>() }
+
+        }
+        return flow {
+            emit(coordinatesData ?: listOf())
+        }
+
+    }
+
     override suspend fun saveCurrentCoordinates(currentCoordinates: CoordinatesData) {
+
+        _currentCoordinates.value = currentCoordinates
 
         val coordinatesJsonString = Gson().toJson(currentCoordinates, CoordinatesData::class.java)
         application.dataStore.edit { settings ->
@@ -102,7 +135,7 @@ class GpsRepositoryImpl(
                     it,
                     CoordinatesData::class.java
                 )
-            }catch (e: Exception){
+            } catch (_: Exception) {
                 CoordinatesData("", "")
             }
         }
