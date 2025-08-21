@@ -63,11 +63,11 @@ class HomeViewmodel @Inject constructor(
                 }
             locations.forEach { location ->
 
-//                vacationRepository
-//                    .getLocationPhotos(location?.locationId).collectLatest { photos ->
-//                        val index = locations.indexOf(location)
-//                        locations[index]?.locationPhotos = photos
-//                    }
+                vacationRepository
+                    .getLocationPhotos(location?.locationId).collectLatest { photos ->
+                        val index = locations.indexOf(location)
+                        locations[index]?.locationPhotos = photos
+                    }
             }
 
             locations = locations.sortedBy { it?.locationPhotos?.isEmpty() }

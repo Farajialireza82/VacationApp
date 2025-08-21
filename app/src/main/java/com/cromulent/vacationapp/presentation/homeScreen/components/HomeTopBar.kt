@@ -1,5 +1,6 @@
 package com.cromulent.vacationapp.presentation.homeScreen.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import com.cromulent.vacationapp.ui.theme.NeonBlitz
 fun HomeTopBar(
     modifier: Modifier = Modifier,
     locationText: String,
+    onRefreshClicked: () -> Unit,
     onLocationClicked: () -> Unit
 ) {
 
@@ -38,6 +40,9 @@ fun HomeTopBar(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
+                .clickable{
+                    onRefreshClicked()
+                }
         ) {
             Text(
                 text = "Explore",
@@ -64,7 +69,8 @@ fun HomeTopBar(
 private fun HomeTBPrev() {
 
     HomeTopBar(
-        locationText = "Aspen, USA"
+        locationText = "Aspen, USA",
+        onRefreshClicked = {}
     ){}
 
 }

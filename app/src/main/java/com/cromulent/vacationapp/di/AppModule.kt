@@ -6,6 +6,7 @@ import com.cromulent.vacationapp.data.local.LocationCacheDao
 import com.cromulent.vacationapp.data.manager.LocalUserManagerImpl
 import com.cromulent.vacationapp.data.remote.VacationApi
 import com.cromulent.vacationapp.data.local.LocationDatabase
+import com.cromulent.vacationapp.data.local.LocationPhotosCacheDao
 import com.cromulent.vacationapp.data.local.LocationTypeConvertor
 import com.cromulent.vacationapp.data.remote.OpenWeatherMapApi
 import com.cromulent.vacationapp.data.repository.GpsRepositoryImpl
@@ -78,8 +79,10 @@ object AppModule {
     @Singleton
     fun provideVacationRepository(
         vacationApi: VacationApi,
-        locationCacheDao: LocationCacheDao
-    ): VacationRepository = VacationRepositoryImpl(vacationApi, locationCacheDao)
+        locationCacheDao: LocationCacheDao,
+        locationPhotosCacheDao: LocationPhotosCacheDao,
+    ): VacationRepository =
+        VacationRepositoryImpl(vacationApi, locationCacheDao, locationPhotosCacheDao)
 
     @Provides
     @Singleton
@@ -113,6 +116,12 @@ object AppModule {
     fun provideLocationCacheDao(
         newsDatabase: LocationDatabase
     ): LocationCacheDao = newsDatabase.locationCacheDao
+
+    @Provides
+    @Singleton
+    fun provideLocationPhotosCacheDao(
+        newsDatabase: LocationDatabase
+    ): LocationPhotosCacheDao = newsDatabase.locationPhotosCacheDao
 
 
 }

@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.unit.dp
 import com.cromulent.vacationapp.presentation.components.CompactLocationCardList
 import com.cromulent.vacationapp.presentation.components.FullLocationCardList
@@ -51,8 +52,8 @@ fun HomeScreen(
     }
 
     LaunchedEffect(currentCoordinates.value) {
-        viewmodel.clearCachedLocations()
-        viewmodel.getNearbyLocations(selectedCategory.key)
+//        viewmodel.clearCachedLocations()
+//        viewmodel.getNearbyLocations(selectedCategory.key)
     }
 
     LaunchedEffect(state.value.error) {
@@ -77,7 +78,13 @@ fun HomeScreen(
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(horizontal = 24.dp),
                 locationText = currentCoordinates.value.getTitle(),
-                onLocationClicked = openLocationPickerScreen
+                onRefreshClicked = {
+                    viewmodel.clearCachedLocations()
+                    viewmodel.getNearbyLocations(selectedCategory.key)
+                },
+                onLocationClicked = {
+                    openLocationPickerScreen()
+                }
             )
         },
         snackbarHost = {
