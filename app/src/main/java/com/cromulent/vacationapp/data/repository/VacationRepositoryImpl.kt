@@ -123,6 +123,42 @@ class VacationRepositoryImpl(
         }
     }
 
+    override suspend fun searchLocation(
+        category: String,
+        query: String
+    ): Flow<Resource<List<Location>>> {
+        val locations = try {
+            vacationApi.searchLocation(
+                query = query,
+                category = if(category == "all" ) null else category
+            )
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong"))
+            }
+
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong"))
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return flow {
+                emit(Resource.Error(e.message ?: "Something went wrong"))
+            }
+        }
+        return flow {
+            locations.data?.let {
+                emit(
+                    Resource.Success(data = it)
+                )
+            }
+        }
+    }
+
     override suspend fun getLocationPhotos(locationId: String?): Flow<Resource<List<LocationPhoto>?>> {
         if (locationId == null) return flow { }
 

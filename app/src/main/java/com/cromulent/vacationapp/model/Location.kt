@@ -32,5 +32,7 @@ data class Location(
     val webUrl: String? = null,
     @SerializedName("price_level")
     val priceLevel: String? = null,
+    @SerializedName("address_obj")
+    val addressObject: Address? = null,
     var locationPhotos: List<LocationPhoto>? = null
 )

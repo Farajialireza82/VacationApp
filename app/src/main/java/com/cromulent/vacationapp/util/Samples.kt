@@ -87,9 +87,18 @@ object Samples {
         "Walk-in Shower"
     )
 
+    val address = Address(
+        street1 = "Birch St",
+        city = "San Francisco",
+        state = "California",
+        country = "US",
+        postalcode = "14502",
+        addressString = ""
+    )
+
     val location = Location(
         locationId = "258730",
-        name = "Beacon Townhouse Inn 1023",
+        name = "Aspen Mountain",
         distance = "3.2",
         description = "Completed in 1889, this colossal landmark, although initially hated by many Parisians, is now a famous symbol of French civic pride.",
         reviewCount = "3221",
@@ -99,7 +108,8 @@ object Samples {
         seeAllPhotosLink = "https://www.tripadvisor.com/Hotel_Review-g60745-d4325990-m66827-Reviews-Residence_Inn_Boston_Back_Bay_Fenway-Boston_Massachusetts.html#photos",
         priceLevel = "$$$$",
         locationPhotos = null,
-        amenities = amenitiesList
+        amenities = amenitiesList,
+        addressObject = address
     )
 
     val locationsList = listOf(

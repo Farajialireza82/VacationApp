@@ -15,5 +15,6 @@
     <color name="search_field_border">#FFA8CCF0</color>
     <color name="box_background">#FFEDF2fA</color>
     <color name="money_color">#FF2DD7A4</color>
+    <color name="hint_color">#FF8E8E93</color>
 
 </resources>

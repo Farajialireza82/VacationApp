@@ -3,6 +3,7 @@ package com.cromulent.vacationapp.data.local
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.cromulent.vacationapp.data.model.LocationPhotoListEntity
+import com.cromulent.vacationapp.model.Address
 import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.model.LocationPhoto
 import com.google.gson.Gson
@@ -64,6 +65,25 @@ class LocationTypeConvertor {
             null
         } else {
             val listType = object : TypeToken<List<LocationPhotoListEntity>>() {}.type
+            Gson().fromJson(value, listType)
+        }
+    }
+
+    @TypeConverter
+    fun fromAddress(value: Address?): String? {
+        return if (value == null) {
+            null
+        } else {
+            Gson().toJson(value)
+        }
+    }
+
+    @TypeConverter
+    fun toAddress(value: String?): Address? {
+        return if (value == null) {
+            null
+        } else {
+            val listType = object : TypeToken<List<Address>>() {}.type
             Gson().fromJson(value, listType)
         }
     }

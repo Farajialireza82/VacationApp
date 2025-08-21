@@ -28,4 +28,11 @@ interface VacationApi {
         @Path("location_id") locationId: String,
         @Query("key") key: String = TRIP_ADVISOR_API_KEY,
     ): Location?
+
+    @GET("location/search")
+    suspend fun searchLocation(
+        @Query("searchQuery") query: String,
+        @Query("category") category: String? = null,
+        @Query("key") key: String = TRIP_ADVISOR_API_KEY,
+    ): Response<List<Location>>
 }
