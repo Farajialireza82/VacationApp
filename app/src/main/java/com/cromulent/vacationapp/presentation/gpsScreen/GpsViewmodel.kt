@@ -2,16 +2,20 @@ package com.cromulent.vacationapp.presentation.gpsScreen
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.manager.GpsRepository
+import com.cromulent.vacationapp.domain.repository.OpenWeatherMapRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GpsViewmodel @Inject constructor(
-    val gpsRepository: GpsRepository
+    val gpsRepository: GpsRepository,
+    val openWeatherMapRepository: OpenWeatherMapRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<GpsState>(GpsState())
@@ -30,5 +34,23 @@ class GpsViewmodel @Inject constructor(
                 isLocating = true
             )
         }
+    }
+
+    fun search(query: String){
+        _state.value = _state.value.copy(
+            isSearching = true
+        )
+        viewModelScope.launch {
+        openWeatherMapRepository
+            .searchForCoordinatesData(query)
+            .collect {
+
+                _state.value = _state.value.copy(
+                    isSearching = false,
+                    searchResults = it
+                )
+            }
+        }
+
     }
 }

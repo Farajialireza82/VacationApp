@@ -14,7 +14,7 @@ interface GpsRepository {
 
     val currentCoordinates: StateFlow<CoordinatesData>
 
-    fun locateUser(onUserLocated:() -> Unit)
+    fun locateUser(onUserLocated:(CoordinatesData) -> Unit)
 
     suspend fun saveCurrentCoordinates(currentCoordinates: CoordinatesData)
 

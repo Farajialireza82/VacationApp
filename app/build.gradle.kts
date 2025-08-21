@@ -24,8 +24,14 @@ android {
 
         buildConfigField(
             "String",
-            "API_KEY",
-            "\"${project.findProperty("API_KEY")}\""
+            "TRIP_ADVISOR_API_KEY",
+            "\"${project.findProperty("TRIP_ADVISOR_API_KEY")}\""
+        )
+
+        buildConfigField(
+            "String",
+            "OPEN_WEATHER_MAP_API_KEY",
+            "\"${project.findProperty("OPEN_WEATHER_MAP_API_KEY")}\""
         )
     }
 

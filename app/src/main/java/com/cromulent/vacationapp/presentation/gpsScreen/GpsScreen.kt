@@ -13,10 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.GpsFixed
 import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -71,7 +74,7 @@ fun GpsScreen(
                         .background(color = colorResource(R.color.background_tertiary))
                         .padding(20.dp)
                         .windowInsetsPadding(WindowInsets.systemBars),
-                    selectedLocationName = currentCoordinates.value.getCoordinatesString(),
+                    selectedLocationName = currentCoordinates.value.getTitle(),
                     locateUser = {
                         requestLocationPermission()
                     }
@@ -98,21 +101,53 @@ fun GpsScreen(
             ) {
                 SearchField(
                     hint = "Search cities, neighborhoods, landmarks..."
-                )
+                ) {
+                    viewmodel.search(it)
+                }
             }
 
             HorizontalDivider(
                 color = colorResource(R.color.background_secondary)
             )
 
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Search results will appear here",
-                    color = colorResource(R.color.subtitle)
-                )
+            if (state.value.isSearching) {
+
+                Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(84.dp)
+                    )
+                }
+
+            } else if (state.value.searchResults.isEmpty()) {
+
+                Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Search results will appear here",
+                        color = colorResource(R.color.subtitle)
+                    )
+                }
+            } else {
+
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    items(state.value.searchResults) {
+
+                        Text(
+                            text = it?.name ?: "NULL"
+                        )
+
+                    }
+                }
+
             }
 
         }

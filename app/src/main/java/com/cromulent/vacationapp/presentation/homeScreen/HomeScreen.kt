@@ -71,7 +71,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(horizontal = 24.dp),
-                locationText = currentCoordinates.value.getCoordinatesString(),
+                locationText = currentCoordinates.value.getTitle(),
                 onLocationClicked = openLocationPickerScreen
             )
         },
@@ -87,7 +87,9 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(horizontal = 24.dp, vertical = 18.dp),
                 hint = "Find things to do"
-            )
+            ){
+
+            }
 
             Spacer(Modifier.size(18.dp))
 
