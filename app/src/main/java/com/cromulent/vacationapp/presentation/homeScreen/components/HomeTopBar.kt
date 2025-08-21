@@ -21,7 +21,11 @@ import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.ui.theme.NeonBlitz
 
 @Composable
-fun HomeTopBar(modifier: Modifier = Modifier) {
+fun HomeTopBar(
+    modifier: Modifier = Modifier,
+    locationText: String,
+    onLocationClicked: () -> Unit
+) {
 
     Row(
         modifier = modifier
@@ -48,7 +52,10 @@ fun HomeTopBar(modifier: Modifier = Modifier) {
             )
         }
 
-       LocationChip()
+        LocationChip(
+            text = locationText,
+            onClick = onLocationClicked
+        )
     }
 }
 
@@ -56,6 +63,8 @@ fun HomeTopBar(modifier: Modifier = Modifier) {
 @Composable
 private fun HomeTBPrev() {
 
-    HomeTopBar()
-    
+    HomeTopBar(
+        locationText = "Aspen, USA"
+    ){}
+
 }
