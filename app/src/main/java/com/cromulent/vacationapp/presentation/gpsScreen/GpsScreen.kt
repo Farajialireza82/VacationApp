@@ -26,6 +26,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -70,6 +74,17 @@ fun GpsScreen(
 
         if (state.value.isCoordinateSelected) {
             backDispatcher?.onBackPressed()
+        }
+    }
+
+    LaunchedEffect(state.value.error) {
+        if (state.value.error?.isNotEmpty() == true) {
+
+            Toast.makeText(
+                context,
+                state.value.error ?: "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -168,19 +183,21 @@ fun GpsScreen(
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 8.dp)
                 ) {
                     items(state.value.searchResults) {
 
                         it ?: return@items
 
                         CoordinatesItem(
+                            modifier = Modifier,
                             coordinatesData = it
                         ) {
                             viewmodel.setCurrentCoordinates(it)
                         }
 
-                        Spacer(Modifier.size(8.dp))
+                        HorizontalDivider(
+                            color = colorResource(R.color.background_secondary)
+                        )
 
                     }
                 }
@@ -227,7 +244,7 @@ fun GpsScreenTopBar(
 
                 Text(
                     text = "Current Selection",
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.W600,
                     fontSize = 16.sp
                 )
 
@@ -270,7 +287,7 @@ fun CoordinatesItem(
             .clickable {
                 onClick()
             }
-            .padding(vertical = 4.dp),
+            .padding(horizontal = 24.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
