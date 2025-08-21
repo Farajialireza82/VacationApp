@@ -31,7 +31,7 @@ class GpsViewmodel @Inject constructor(
         )
         gpsRepository.locateUser{
             _state.value = _state.value.copy(
-                isLocating = true
+                isLocating = false
             )
         }
     }

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.presentation.components.SearchField
-import com.cromulent.vacationapp.presentation.onBoardingScreen.components.OnBoardingButton
+import com.cromulent.vacationapp.presentation.components.TraveloButton
 import com.cromulent.vacationapp.util.openAppSettings
 import com.cromulent.vacationapp.util.rememberLocationPermissionHandler
 
@@ -75,6 +76,7 @@ fun GpsScreen(
                         .padding(20.dp)
                         .windowInsetsPadding(WindowInsets.systemBars),
                     selectedLocationName = currentCoordinates.value.getTitle(),
+                    isLocating = state.value.isLocating,
                     locateUser = {
                         requestLocationPermission()
                     }
@@ -160,6 +162,7 @@ fun GpsScreen(
 fun GpsScreenTopBar(
     modifier: Modifier = Modifier,
     selectedLocationName: String,
+    isLocating: Boolean = false,
     locateUser: () -> Unit
 ) {
 
@@ -205,9 +208,10 @@ fun GpsScreenTopBar(
 
         Spacer(Modifier.size(16.dp))
 
-        OnBoardingButton(
+        TraveloButton(
             text = "Use Current Location",
             leadingIcon = Icons.Rounded.GpsFixed,
+            isLoading = isLocating,
             onClick = {
                 locateUser()
             }
@@ -221,5 +225,6 @@ fun GpsScreenTopBar(
 @Preview
 @Composable
 private fun GpsScreenPrev() {
+
 
 }

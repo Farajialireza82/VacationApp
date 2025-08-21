@@ -23,6 +23,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -67,6 +68,8 @@ class GpsRepositoryImpl(
             .addOnSuccessListener { location ->
 
                 repositoryScope.launch {
+
+                    delay(1000)
 
                     searchForCoordinatesName(
                         location.latitude.toString(),
