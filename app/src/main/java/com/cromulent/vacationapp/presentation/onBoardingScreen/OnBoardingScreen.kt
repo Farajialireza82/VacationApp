@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
-import com.cromulent.vacationapp.presentation.onBoardingScreen.components.OnBoardingButton
+import com.cromulent.vacationapp.presentation.components.TraveloButton
 import com.cromulent.vacationapp.ui.theme.HiatusFont
 import kotlinx.coroutines.launch
 
@@ -85,12 +85,12 @@ fun OnBoardingScreen(
                     .padding(vertical = 12.dp)
             )
 
-            OnBoardingButton(
+            TraveloButton(
                 text = if (page == pages.size - 1) "Explore" else "Continue",
                 onClick = {
                     if (page == pages.size - 1) {
                         viewmodel.saveAppEntry()
-                        return@OnBoardingButton
+                        return@TraveloButton
                     } else {
                         scope.launch {
                             pagerState.nextPage()
