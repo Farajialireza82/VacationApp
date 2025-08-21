@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.cromulent.vacationapp.presentation.detailsScreen.DetailsScreen
 import com.cromulent.vacationapp.presentation.detailsScreen.DetailsViewmodel
 import com.cromulent.vacationapp.presentation.gpsScreen.GpsScreen
+import com.cromulent.vacationapp.presentation.gpsScreen.GpsViewmodel
 import com.cromulent.vacationapp.presentation.homeScreen.HomeScreen
 import com.cromulent.vacationapp.presentation.homeScreen.HomeViewmodel
 import com.cromulent.vacationapp.presentation.onBoardingScreen.OnBoardingScreen
@@ -54,7 +55,7 @@ fun MainNavGraph(
             composable(
                 route = Route.HomeScreen.route
             ) {
-                val viewmodel: HomeViewmodel = hiltViewModel()
+                val viewmodel = hiltViewModel<HomeViewmodel>()
                 HomeScreen(
                     modifier = modifier,
                     viewmodel = viewmodel,
@@ -82,7 +83,10 @@ fun MainNavGraph(
             composable(
                 route = Route.GpsScreen.route,
             ) {
-                GpsScreen()
+                val viewmodel = hiltViewModel<GpsViewmodel>()
+                GpsScreen(
+                    viewmodel = viewmodel
+                )
             }
         }
     }
