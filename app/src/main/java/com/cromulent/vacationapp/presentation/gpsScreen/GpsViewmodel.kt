@@ -34,12 +34,19 @@ class GpsViewmodel @Inject constructor(
             _state.value = _state.value.copy(
                 isLocating = false
             )
+            _state.value = _state.value.copy(
+                isCoordinateSelected = true
+            )
+            setCurrentCoordinates(it)
         }
     }
 
     fun setCurrentCoordinates(data: CoordinatesData) {
         viewModelScope.launch {
             gpsRepository.saveCurrentCoordinates(data)
+            _state.value = _state.value.copy(
+                isCoordinateSelected = true
+            )
         }
     }
 
