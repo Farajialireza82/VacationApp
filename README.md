@@ -4,7 +4,6 @@
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
   <img src="https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white" />
   <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" />
-  <img src="https://img.shields.io/badge/Material%20Design-757575?style=for-the-badge&logo=material-design&logoColor=white" />
 </div>
 
 <div align="center">
@@ -93,10 +92,10 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 - Advanced search functionality with category filtering
 
 ### 📍 **Intelligent Location Services**
-- **GPS Location Detection** - Automatically find your current location
-- **City Search & Selection** - Search for any city worldwide
-- **Geocoding & Reverse Geocoding** - Convert between addresses and coordinates
-- **Weather Integration** - Get current weather for any location
+- GPS Location Detection - Automatically find your current location
+- City Search & Selection - Search for any city worldwide
+- Geocoding & Reverse Geocoding - Convert between addresses and coordinates
+- Weather Integration - Get current weather for any location
 
 ### 🗺️ **Rich Location Data**
 - Detailed destination information
@@ -105,11 +104,11 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 - Geographic coordinates and maps
 
 ### 📱 **Modern UI/UX**
-- Material 3 Design System
+- Material 3 Components - Using Material components as building blocks with custom styling
 - Smooth animations and transitions
 - Dark/Light theme support
 - Responsive layouts for all screen sizes
-- **Native Splash Screen** with proper branding
+- Native Splash Screen with proper branding
 
 ### ⚡ **Performance & Reliability**
 - Offline-First Architecture
