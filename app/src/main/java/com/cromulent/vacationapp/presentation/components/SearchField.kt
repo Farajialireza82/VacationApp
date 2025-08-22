@@ -25,6 +25,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -124,6 +126,7 @@ fun SearchField(
     modifier: Modifier = Modifier,
     text: String,
     hint: String,
+    focusRequester: FocusRequester,
     onValueChanged: (String) -> Unit,
     search: () -> Unit,
 ) {
@@ -143,6 +146,8 @@ fun SearchField(
 
     ) {
         TextField(
+            modifier = Modifier
+                .focusRequester(focusRequester),
             value = text,
             onValueChange = {
                 onValueChanged(it)

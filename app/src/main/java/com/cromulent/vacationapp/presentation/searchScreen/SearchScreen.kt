@@ -35,11 +35,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -75,6 +77,19 @@ fun SearchScreen(
     var selectedCategory by rememberSaveable { mutableStateOf(searchCategories[0]) }
 
     var searchQuery by rememberSaveable { mutableStateOf("") }
+
+    val focusRequester = remember { FocusRequester() }
+
+    var isFirstRecomposition by rememberSaveable { mutableStateOf(true) }
+
+    LaunchedEffect(true) {
+
+        if(isFirstRecomposition){
+            focusRequester.requestFocus()
+            isFirstRecomposition = false
+        }
+
+    }
 
     Scaffold(
         modifier = modifier,
@@ -127,6 +142,7 @@ fun SearchScreen(
                 text = searchQuery,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 hint = "Where do you want to go?",
+                focusRequester = focusRequester,
                 onValueChanged = { searchQuery = it },
                 search = {
                     viewmodel.search(selectedCategory.key, searchQuery)
