@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
+import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.presentation.components.CompactLocationCardList
 import com.cromulent.vacationapp.presentation.components.FullLocationCardList
 import com.cromulent.vacationapp.presentation.components.SearchField
@@ -62,17 +63,20 @@ fun HomeScreen(
 
     val state = viewmodel.state.collectAsState()
     val currentCoordinates = viewmodel.currentCoordinates.collectAsState()
+    var lastCoordinates: CoordinatesData? by rememberSaveable { mutableStateOf(null) }
+
     var selectedCategory by rememberSaveable { mutableStateOf(CATEGORIES[0]) }
     var snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(selectedCategory) {
-        viewmodel.getNearbyLocations(selectedCategory.key)
-    }
-
-    LaunchedEffect(currentCoordinates.value) {
+    LaunchedEffect(currentCoordinates) {
         if (currentCoordinates.value == null) {
             openLocationPickerScreen()
             return@LaunchedEffect
+        } else {
+            if (currentCoordinates.value != lastCoordinates) {
+                viewmodel.getNearbyLocations(selectedCategory.key, clearCache = true)
+                lastCoordinates = currentCoordinates.value
+            }
         }
     }
 
@@ -100,8 +104,7 @@ fun HomeScreen(
                     .padding(horizontal = 24.dp),
                 locationText = currentCoordinates.value?.getTitle() ?: "NO TITLE",
                 onRefreshClicked = {
-                    viewmodel.clearCachedLocations()
-                    viewmodel.getNearbyLocations(selectedCategory.key)
+                    viewmodel.getNearbyLocations(selectedCategory.key, clearCache = true)
                 },
                 onLocationClicked = {
                     openLocationPickerScreen()
@@ -138,6 +141,7 @@ fun HomeScreen(
                         isSelected = selectedCategory == category
                     ) {
                         selectedCategory = category
+                        viewmodel.getNearbyLocations(selectedCategory.key)
                     }
                 }
             }
