@@ -1,6 +1,5 @@
 package com.cromulent.vacationapp.presentation.searchScreen
 
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,10 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.rounded.LocationOn
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,7 +35,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -77,22 +72,9 @@ fun SearchScreen(
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     var searchCategories = listOf(Category("all", "All")) + CATEGORIES
-    var selectedCategory by remember { mutableStateOf(searchCategories[0]) }
+    var selectedCategory by rememberSaveable { mutableStateOf(searchCategories[0]) }
 
     var searchQuery by rememberSaveable { mutableStateOf("") }
-
-    LaunchedEffect(searchQuery) {
-        if (searchQuery.isNotBlank()) {
-            delay(500)
-            viewmodel.search(selectedCategory.key, searchQuery)
-        }
-    }
-
-    LaunchedEffect(selectedCategory) {
-        if (searchQuery.isNotBlank()) {
-            viewmodel.search(selectedCategory.key, searchQuery)
-        }
-    }
 
     Scaffold(
         modifier = modifier,
@@ -145,12 +127,11 @@ fun SearchScreen(
                 text = searchQuery,
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 hint = "Where do you want to go?",
-                onValueChanged = {
-                    searchQuery = it
+                onValueChanged = { searchQuery = it },
+                search = {
+                    viewmodel.search(selectedCategory.key, searchQuery)
                 }
-            ) {
-                viewmodel.search(selectedCategory.key, searchQuery)
-            }
+            )
 
             Spacer(Modifier.size(22.dp))
 
@@ -166,6 +147,9 @@ fun SearchScreen(
                         isSelected = selectedCategory == category
                     ) {
                         selectedCategory = category
+                        if (searchQuery.isNotBlank()) {
+                            viewmodel.search(selectedCategory.key, searchQuery)
+                        }
                     }
                 }
             }
