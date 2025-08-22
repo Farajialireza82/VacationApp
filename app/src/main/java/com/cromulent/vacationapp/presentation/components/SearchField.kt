@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchField(
@@ -123,8 +125,10 @@ fun SearchField(
     text: String,
     hint: String,
     onValueChanged: (String) -> Unit,
-    onSearchClicked: () -> Unit,
+    search: () -> Unit,
 ) {
+
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -140,13 +144,23 @@ fun SearchField(
     ) {
         TextField(
             value = text,
-            onValueChange = onValueChanged,
+            onValueChange = {
+                onValueChanged(it)
+
+                if (text.isNotBlank()) {
+                    scope.launch {
+                        delay(500)
+                        search()
+                    }
+                }
+
+            },
             maxLines = 1,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = { onSearchClicked() }
+                onSearch = { search() }
             ),
             placeholder = {
                 Text(
