@@ -44,18 +44,59 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 └── 🏷️ Domain Models
 
 💾 Data Layer
-├── 🌐 Remote Data Source (TripAdvisor API)
+├── 🌐 Remote Data Sources (TripAdvisor API + OpenWeatherMap API)
 ├── 💿 Local Data Source (Room Database)
 └── 🗄️ Repository Implementation
 ```
+
+
+## 🛠️ Tech Stack
+
+### **Core Framework**
+- **Kotlin** - Modern, concise, and safe programming language
+- **Jetpack Compose** - Declarative UI toolkit for native Android
+- **Material 3** - Latest Material Design components
+
+### **Architecture Components**
+- **MVVM Pattern** - Separation of concerns and testability
+- **Clean Architecture** - Maintainable and scalable code structure
+- **Offline-First Architecture** - Seamless user experience without connectivity
+- **Dagger Hilt** - Dependency injection for cleaner code
+- **Navigation Compose** - Type-safe navigation between screens
+
+### **Data & Networking**
+- **Retrofit** - Type-safe HTTP client for API communication
+- **Room Database** - Local data persistence and caching
+- **DataStore Preferences** - Modern data storage solution for user preferences
+- **Gson** - JSON serialization and deserialization
+- **OkHttp Logging Interceptor** - Network request/response logging
+
+### **Location & Services**
+- **Google Play Location Services** - Accurate GPS positioning
+- **Core SplashScreen** - Native Android 12+ splash screen implementation
+
+### **UI & Media**
+- **Coil Compose** - Fast and lightweight image loading library
+- **Material Icons Extended** - Comprehensive icon library
+- **Custom Animations** - Smooth and delightful user interactions
+
+### **Development Tools**
+- **KSP (Kotlin Symbol Processing)** - Faster annotation processing
+- **Gradle Version Catalogs** - Centralized dependency management
 
 ## 🚀 Features
 
 ### 🔍 **Smart Discovery**
 - Browse destinations by categories
-- Location-based recommendations
+- Location-based recommendations with GPS integration
 - Popular and trending spots
-- Advanced search functionality
+- Advanced search functionality with category filtering
+
+### 📍 **Intelligent Location Services**
+- **GPS Location Detection** - Automatically find your current location
+- **City Search & Selection** - Search for any city worldwide
+- **Geocoding & Reverse Geocoding** - Convert between addresses and coordinates
+- **Weather Integration** - Get current weather for any location
 
 ### 🗺️ **Rich Location Data**
 - Detailed destination information
@@ -68,52 +109,36 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 - Smooth animations and transitions
 - Dark/Light theme support
 - Responsive layouts for all screen sizes
+- **Native Splash Screen** with proper branding
 
 ### ⚡ **Performance & Reliability**
+- Offline-First Architecture
 - Efficient image loading and caching
 - Error handling with retry mechanisms
 - Optimized for battery and data usage
 
 ### 🔜 **Coming Soon**
-- Offline-first architecture
 - Comprehensive unit testing
 
-## 🛠️ Tech Stack
+## 🌐 Data Sources
 
-### **Core Framework**
-- **Kotlin** - Modern, concise, and safe programming language
-- **Jetpack Compose** - Declarative UI toolkit for native Android
-- **Material 3** - Latest Material Design components
-
-### **Architecture Components**
-- **MVVM Pattern** - Separation of concerns and testability
-- **Clean Architecture** - Maintainable and scalable code structure
-- **Dagger Hilt** - Dependency injection for cleaner code
-- **Navigation Compose** - Type-safe navigation between screens
-
-### **Data & Networking**
-- **Retrofit** - Type-safe HTTP client for API communication
-- **Room Database** - Local data persistence and caching
-- **DataStore** - Modern data storage solution for preferences
-- **Gson** - JSON serialization and deserialization
-
-### **UI & Media**
-- **Coil** - Fast and lightweight image loading library
-- **Material Icons Extended** - Comprehensive icon library
-- **Custom Animations** - Smooth and delightful user interactions
-
-### **Development Tools**
-- **KSP (Kotlin Symbol Processing)** - Faster annotation processing
-- **Gradle Version Catalogs** - Centralized dependency management
-
-## 🌐 Data Source
-
-Powered by the **TripAdvisor API**, providing access to:
+### **TripAdvisor API**
+Provides comprehensive travel data including:
 - 🏨 Hotels and accommodations
 - 🍽️ Restaurants and dining
 - 🎯 Attractions and activities  
 - 📍 Location details and reviews
 - 📊 Real-time ratings and feedback
+
+### **OpenWeatherMap API** ⭐ 
+A fantastic **completely free** weather service providing:
+- 🌤️ Current weather conditions
+- 🌍 City and country search with geocoding
+- 🗺️ Reverse geocoding for coordinates
+- 📍 Location-based weather data
+- 🆓 **100% Free** - No hidden costs or usage limits for basic features!
+
+*Special thanks to OpenWeatherMap for providing an excellent free service that makes location-based features accessible to all developers!*
 
 ## 📱 Screenshots
 
@@ -123,9 +148,10 @@ Powered by the **TripAdvisor API**, providing access to:
 
 ### Prerequisites
 - **Android Studio** Hedgehog | 2023.1.1 or newer
-- **JDK 17** or higher
+- **JDK 21** or higher
 - **Android SDK** with API level 24+
 - **TripAdvisor API Key** (see setup instructions below)
+- **OpenWeatherMap API Key** (see setup instructions below)
 
 ### Installation
 
@@ -138,17 +164,25 @@ Powered by the **TripAdvisor API**, providing access to:
 2. **Get your TripAdvisor API key**
    - Visit [TripAdvisor Developer Portal](https://www.tripadvisor.com/developers)
    - Create an account and generate an API key
-   - Add your API key to `gradle.properties`:
+
+3. **Get your OpenWeatherMap API key**
+   - Visit [OpenWeatherMap API](https://openweathermap.org/api)
+   - Create a free account and generate an API key
+   - Enjoy their completely free tier! 🎉
+
+4. **Configure API keys**
+   - Add your API keys to `gradle.properties`:
    ```properties
-   API_KEY=your_api_key_here
+   TRIP_ADVISOR_API_KEY=your_trip_advisor_key_here
+   OPEN_WEATHER_MAP_API_KEY=your_open_weather_map_key_here
    ```
 
-3. **Open in Android Studio**
+5. **Open in Android Studio**
    - Open Android Studio
    - Select "Open an existing project"
    - Navigate to the cloned directory and open it
 
-4. **Build and Run**
+6. **Build and Run**
    - Sync the project with Gradle files
    - Run the app on an emulator or physical device
 
@@ -179,6 +213,8 @@ app/
 │   ├── presentation/   # UI layer
 │   │   ├── components/ # Reusable UI components
 │   │   ├── home/       # Home screen and components
+│   │   ├── location/   # Location selector screen
+│   │   ├── search/     # Search screen with filtering
 │   │   ├── navigation/ # Navigation setup
 │   │   └── theme/      # App theming and styling
 │   └── util/           # Utility classes and constants
@@ -211,6 +247,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 - **[Nickelfox Design](https://www.figma.com/community/file/1091615514005406765)** - For the beautiful "Aspen Travel App Exploration" design inspiration
 - **[TripAdvisor](https://www.tripadvisor.com/)** - For providing comprehensive travel data
+- **[OpenWeatherMap](https://openweathermap.org/)** - For their amazing **completely free** weather and geocoding services! 🌟
 - **[Android Developer Community](https://developer.android.com/)** - For excellent documentation and resources
 - **[Jetpack Compose Community](https://developer.android.com/jetpack/compose)** - For pushing the boundaries of Android UI development
 
