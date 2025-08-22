@@ -5,6 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
@@ -17,6 +19,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cromulent.vacationapp.R
 
@@ -28,7 +31,7 @@ fun LocationChip(
 ) {
     Row(
         modifier = Modifier
-            .clickable{
+            .clickable {
                 onClick()
             },
         verticalAlignment = Alignment.CenterVertically
@@ -43,6 +46,8 @@ fun LocationChip(
         Spacer(Modifier.size(6.dp))
 
         Text(
+            modifier = Modifier
+                .wrapContentWidth(),
             text = text,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -60,4 +65,12 @@ fun LocationChip(
         )
 
     }
+}
+
+@Preview
+@Composable
+private fun Preview() {
+
+    LocationChip(text = "Varamin, Tehran, Iran-ebozorg") { }
+
 }

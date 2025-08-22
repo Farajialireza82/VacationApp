@@ -15,11 +15,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_7
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.ui.theme.NeonBlitz
+import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 
 @Composable
 fun HomeTopBar(
@@ -64,7 +66,7 @@ fun HomeTopBar(
     }
 }
 
-@Preview
+@Preview(showBackground = true, device = PIXEL_7, showSystemUi = true)
 @Composable
 private fun HomeTBPrev() {
 
