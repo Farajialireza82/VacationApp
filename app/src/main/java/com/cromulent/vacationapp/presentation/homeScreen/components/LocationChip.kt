@@ -2,10 +2,14 @@ package com.cromulent.vacationapp.presentation.homeScreen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -15,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,37 +36,38 @@ fun LocationChip(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clickable {
                 onClick()
-            },
+            }
+            .wrapContentWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             modifier = Modifier
-                .size(16.dp),
+                .size(16.dp)
+                .wrapContentWidth(),
             painter = painterResource(R.drawable.ic_location),
             contentDescription = "Location Icon"
         )
 
-        Spacer(Modifier.size(6.dp))
-
         Text(
             modifier = Modifier
-                .wrapContentWidth(),
+                .padding(start = 2.dp, end = 6.dp)
+                .weight(1f),
             text = text,
             maxLines = 1,
+            textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
             color = Color.DarkGray,
             fontWeight = FontWeight.W300
         )
 
-        Spacer(Modifier.size(6.dp))
-
-        Icon(
-            modifier = modifier.size(16.dp),
+        Image(
+            modifier = Modifier
+                .size(16.dp),
             imageVector = Icons.Default.KeyboardArrowDown,
-            tint = colorResource(R.color.primary),
+            colorFilter = ColorFilter.tint(colorResource(R.color.primary)),
             contentDescription = ""
         )
 
@@ -71,6 +78,6 @@ fun LocationChip(
 @Composable
 private fun Preview() {
 
-    LocationChip(text = "Varamin, Tehran, Iran-ebozorg") { }
+    LocationChip(text = "Paris, THE GREAT FRANCE") { }
 
 }
