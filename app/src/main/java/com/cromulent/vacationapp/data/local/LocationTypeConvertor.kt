@@ -83,7 +83,7 @@ class LocationTypeConvertor {
         return if (value == null) {
             null
         } else {
-            val listType = object : TypeToken<List<Address>>() {}.type
+            val listType = object : TypeToken<Address>() {}.type
             Gson().fromJson(value, listType)
         }
     }
