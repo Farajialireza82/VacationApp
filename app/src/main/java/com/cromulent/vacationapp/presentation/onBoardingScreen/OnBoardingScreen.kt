@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.presentation.components.TraveloButton
 import com.cromulent.vacationapp.ui.theme.HiatusFont
@@ -39,95 +41,68 @@ import kotlinx.coroutines.launch
 fun OnBoardingScreen(
     modifier: Modifier = Modifier,
     viewmodel: OnBoardingViewModel
-    ) {
-
-    var page by remember { mutableIntStateOf(0) }
-    var scope = rememberCoroutineScope()
-
-    var pagerState = rememberPagerState(
+) {
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(
         initialPage = 0,
         pageCount = { pages.size }
     )
 
-
+    val currentPage by rememberUpdatedState(pagerState.currentPage)
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
-
-        HorizontalPager(pagerState) {
-            page = pagerState.currentPage
-
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) { pageIndex ->
             OnBoardingPage(
                 modifier = Modifier.fillMaxSize(),
-                onBoardingData = pages[it]
+                onBoardingData = pages[pageIndex]
             )
         }
 
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(
-                    vertical = 32.dp,
-                    horizontal = 28.dp
-                ),
+                .padding(vertical = 32.dp, horizontal = 28.dp),
         ) {
-
             Text(
-                text = pages[page].title,
+                text = pages[currentPage].title,
                 color = Color.White,
                 fontSize = 32.sp,
                 lineHeight = 36.sp,
                 modifier = Modifier
                     .width(180.dp)
-                    .animateContentSize()
                     .padding(vertical = 12.dp)
             )
 
             TraveloButton(
-                text = if (page == pages.size - 1) "Explore" else "Continue",
+                text = if (currentPage == pages.lastIndex) "Explore" else "Continue",
                 onClick = {
-                    if (page == pages.size - 1) {
+                    if (currentPage == pages.lastIndex) {
                         viewmodel.saveAppEntry()
-                        return@TraveloButton
                     } else {
                         scope.launch {
-                            pagerState.nextPage()
+                            pagerState.animateScrollToPage(currentPage + 1)
                         }
                     }
                 }
             )
         }
     }
-
-
 }
-
-fun PagerState.isOnLastPage(): Boolean {
-    return currentPage == pageCount + 1
-}
-
-suspend fun PagerState.nextPage() {
-    val nextPage = if (currentPage == pageCount + 1) 0 else currentPage + 1
-    animateScrollToPage(nextPage)
-}
-
 
 @Composable
 fun OnBoardingPage(
     modifier: Modifier = Modifier,
     onBoardingData: OnBoardingData
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-
-        Image(
-            modifier = Modifier
-                .fillMaxSize(),
-            painter = painterResource(onBoardingData.image),
+    Box(modifier = modifier.fillMaxSize()) {
+        AsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            model = onBoardingData.image,
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
@@ -136,11 +111,13 @@ fun OnBoardingPage(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    brush = Brush.linearGradient(
+                    brush = Brush.verticalGradient(
                         colors = listOf(
-                            Color(0x00000000),
-                            Color(0xA3000000)
-                        )
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.64f)
+                        ),
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY
                     )
                 )
         )
@@ -149,16 +126,16 @@ fun OnBoardingPage(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .wrapContentHeight()
                 .padding(vertical = 90.dp, horizontal = 12.dp),
             text = onBoardingData.locationName,
-            fontSize = 90.sp,
+            fontSize = 72.sp,
             textAlign = TextAlign.Center,
             fontFamily = HiatusFont,
-            letterSpacing = 6.sp,
-            lineHeight = 120.sp,
+            letterSpacing = 4.sp,
+            lineHeight = 96.sp,
             fontWeight = FontWeight.Bold,
-            color = onBoardingData.titleColor
+            color = onBoardingData.titleColor,
+            maxLines = 2
         )
     }
 }

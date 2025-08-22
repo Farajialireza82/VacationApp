@@ -11,9 +11,6 @@ import com.cromulent.vacationapp.presentation.navigation.MainNavGraph
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.cromulent.vacationapp.presentation.searchScreen.SearchScreen
-import com.cromulent.vacationapp.presentation.searchScreen.SearchViewmodel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
