@@ -27,19 +27,21 @@ class HomeViewmodel @Inject constructor(
 
     private var cachedLocationData: Map<String, List<Location?>> = mutableMapOf()
 
-    fun clearCachedLocations() {
-        cachedLocationData = mutableMapOf()
-    }
-
-
     fun getNearbyLocations(
-        category: String
+        category: String,
+        clearCache: Boolean = false
     ) {
+
+        if(clearCache){
+            cachedLocationData = mutableMapOf()
+        }
+
 
         _state.value = _state.value.copy(
             isLoading = true,
             error = null
         )
+
 
         if (cachedLocationData.contains(category)) {
             _state.value =
