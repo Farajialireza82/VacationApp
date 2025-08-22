@@ -200,7 +200,7 @@ fun HomeScreen(
                             openDetailsScreen(it)
                         }
                     },
-                    onSeeAllClicked = {},
+                    onSeeAllClicked = null,
                 )
 
                 Spacer(Modifier.size(32.dp))

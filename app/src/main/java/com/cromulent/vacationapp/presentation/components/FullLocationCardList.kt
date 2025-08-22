@@ -49,7 +49,7 @@ fun FullLocationCardList(
     locations: List<Location?>,
     isLoading: Boolean = false,
     onLocationClicked: (Location?) -> Unit,
-    onSeeAllClicked: () -> Unit,
+    onSeeAllClicked: (() -> Unit)? = null,
 ) {
 
     Column(
@@ -69,16 +69,19 @@ fun FullLocationCardList(
                 fontWeight = FontWeight.W600
             )
 
-            Text(
-                modifier = Modifier
-                    .clickable(
-                        onClick = onSeeAllClicked
-                    ),
-                fontWeight = FontWeight.W400,
-                text = "See all",
-                fontSize = 12.sp,
-                color = colorResource(R.color.primary)
-            )
+            onSeeAllClicked?.let {
+
+                Text(
+                    modifier = Modifier
+                        .clickable(
+                            onClick = onSeeAllClicked
+                        ),
+                    fontWeight = FontWeight.W400,
+                    text = "See all",
+                    fontSize = 12.sp,
+                    color = colorResource(R.color.primary)
+                )
+            }
 
         }
 
@@ -128,7 +131,6 @@ private fun FullLocPrev() {
             locations = locations,
             isLoading = true,
             onLocationClicked = {},
-            onSeeAllClicked = {}
         )
 
     }
