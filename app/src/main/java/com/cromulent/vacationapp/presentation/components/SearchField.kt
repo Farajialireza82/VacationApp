@@ -131,7 +131,12 @@ fun SearchField(
     search: () -> Unit,
 ) {
 
-    val scope = rememberCoroutineScope()
+    LaunchedEffect(text) {
+        if (text.isNotBlank()) {
+            delay(500)
+            search()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -151,14 +156,6 @@ fun SearchField(
             value = text,
             onValueChange = {
                 onValueChanged(it)
-
-                if (text.isNotBlank()) {
-                    scope.launch {
-                        delay(500)
-                        search()
-                    }
-                }
-
             },
             maxLines = 1,
             keyboardOptions = KeyboardOptions(
