@@ -55,7 +55,7 @@ fun FullLocationCard(
     val locationPhotos = location?.locationPhotos
 
     val imageUrl =
-        if (locationPhotos?.isNotEmpty() == true) locationPhotos[0].images.large.url else ""
+        if (locationPhotos?.isNotEmpty() == true) locationPhotos[0].images.original?.url else ""
 
     val imageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)

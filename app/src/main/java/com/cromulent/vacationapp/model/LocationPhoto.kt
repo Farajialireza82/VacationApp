@@ -9,11 +9,11 @@ data class LocationPhoto(
 )
 
 data class Images(
-    @SerializedName("thumbnail") val thumbnail: ImageData,
-    @SerializedName("small") val small: ImageData,
-    @SerializedName("medium") val medium: ImageData,
-    @SerializedName("large") val large: ImageData,
-    @SerializedName("original") val original: ImageData
+    @SerializedName("thumbnail") val thumbnail: ImageData?,
+    @SerializedName("small") val small: ImageData?,
+    @SerializedName("medium") val medium: ImageData?,
+    @SerializedName("large") val large: ImageData?,
+    @SerializedName("original") val original: ImageData?
 )
 
 data class ImageData(

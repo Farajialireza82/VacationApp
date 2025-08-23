@@ -66,7 +66,7 @@ fun LocationPhotoSlider(
 
             PhotoCard(
                 modifier = Modifier.fillMaxSize(),
-                imageUrl = photos[it].images.large.url,
+                imageUrl = photos[it].images.original?.url,
                 contentScale = contentScale,
                 onPhotoClicked = onPhotoClicked?.let { callback ->
                     { callback(photos[it]) }
