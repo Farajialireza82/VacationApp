@@ -1,4 +1,4 @@
-# 🌍 Travelo
+🌍 Travelo
 
 <div align="center">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
@@ -48,6 +48,41 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 └── 🗄️ Repository Implementation
 ```
 
+## 🚀 Features
+
+### 🔍 **Smart Discovery**
+- Browse destinations by categories
+- Location-based recommendations with GPS integration
+- Popular and trending spots
+- Advanced search functionality with category filtering
+
+### 📍 **Intelligent Location Services**
+- **GPS Location Detection** - Automatically find your current location
+- **City Search & Selection** - Search for any city worldwide
+- **Geocoding & Reverse Geocoding** - Convert between addresses and coordinates
+- **Weather Integration** - Get current weather for any location
+
+### 🗺️ **Rich Location Data**
+- Detailed destination information
+- High-quality photos and galleries
+- Reviews and ratings
+- Geographic coordinates and maps
+
+### 📱 **Modern UI/UX**
+- Material 3 Design System
+- Smooth animations and transitions
+- Dark/Light theme support
+- Responsive layouts for all screen sizes
+- **Native Splash Screen** with proper branding
+
+### ⚡ **Performance & Reliability**
+- **Offline-First Architecture** - Works seamlessly without internet
+- Efficient image loading and caching
+- Error handling with retry mechanisms
+- Optimized for battery and data usage
+
+### 🔜 **Coming Soon**
+- Comprehensive unit testing
 
 ## 🛠️ Tech Stack
 
@@ -83,54 +118,18 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 - **KSP (Kotlin Symbol Processing)** - Faster annotation processing
 - **Gradle Version Catalogs** - Centralized dependency management
 
-## 🚀 Features
-
-### 🔍 **Smart Discovery**
-- Browse destinations by categories
-- Location-based recommendations with GPS integration
-- Popular and trending spots
-- Advanced search functionality with category filtering
-
-### 📍 **Intelligent Location Services**
-- GPS Location Detection - Automatically find your current location
-- City Search & Selection - Search for any city worldwide
-- Geocoding & Reverse Geocoding - Convert between addresses and coordinates
-- Weather Integration - Get current weather for any location
-
-### 🗺️ **Rich Location Data**
-- Detailed destination information
-- High-quality photos and galleries
-- Reviews and ratings
-- Geographic coordinates and maps
-
-### 📱 **Modern UI/UX**
-- Material 3 Components - Using Material components as building blocks with custom styling
-- Smooth animations and transitions
-- Dark/Light theme support
-- Responsive layouts for all screen sizes
-- Native Splash Screen with proper branding
-
-### ⚡ **Performance & Reliability**
-- Offline-First Architecture
-- Efficient image loading and caching
-- Error handling with retry mechanisms
-- Optimized for battery and data usage
-
-### 🔜 **Coming Soon**
-- Comprehensive unit testing
-
 ## 🌐 Data Sources
 
 ### **TripAdvisor API**
 Provides comprehensive travel data including:
 - 🏨 Hotels and accommodations
 - 🍽️ Restaurants and dining
-- 🎯 Attractions and activities  
+- 🎯 Attractions and activities
 - 📍 Location details and reviews
 - 📊 Real-time ratings and feedback
 
-### **OpenWeatherMap API** ⭐ 
-A fantastic **completely free** weather service providing:
+### **OpenWeatherMap API** ⭐
+A fantastic **completely free** weather service (unlike TripAdvisor's paid tiers!) providing:
 - 🌤️ Current weather conditions
 - 🌍 City and country search with geocoding
 - 🗺️ Reverse geocoding for coordinates
@@ -141,7 +140,19 @@ A fantastic **completely free** weather service providing:
 
 ## 📱 Screenshots
 
-*Coming soon! We're putting the finishing touches on the UI.*
+<div align="center">
+![Uploading HomeScreen-Nature.jpg…]()
+
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-Nature.jpg" width="200" alt="Home Screen - Nature Category" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/DetailScreen.jpg" width="200" alt="Location Detail Screen" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/LocationScreen.jpg" width="200" alt="Location Selection Screen" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-EmptyState.jpg.jpg" width="200" alt="HomeScreen-EmptyState.jpg" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/SearchScreen-InitialState.jpg" width="200" alt="Search Screen" />
+</div>
+
+<div align="center">
+  <em>From left to right: Home Screen with Nature category, Detailed location view, Smart location selection, Advanced search with filtering, Home Screen empty state and initial state of Search Screen</em>
+</div>
 
 ## 🚀 Getting Started
 
