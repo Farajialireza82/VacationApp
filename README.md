@@ -1,9 +1,10 @@
-🌍 Travelo
+# 🌍 Travelo
 
 <div align="center">
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" />
   <img src="https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white" />
   <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white" />
+  <img src="https://img.shields.io/badge/Material%20Design-757575?style=for-the-badge&logo=material-design&logoColor=white" />
 </div>
 
 <div align="center">
@@ -124,11 +125,11 @@ Built following **Clean Architecture** principles with **MVVM** pattern:
 Provides comprehensive travel data including:
 - 🏨 Hotels and accommodations
 - 🍽️ Restaurants and dining
-- 🎯 Attractions and activities
+- 🎯 Attractions and activities  
 - 📍 Location details and reviews
 - 📊 Real-time ratings and feedback
 
-### **OpenWeatherMap API** ⭐
+### **OpenWeatherMap API** ⭐ 
 A fantastic **completely free** weather service (unlike TripAdvisor's paid tiers!) providing:
 - 🌤️ Current weather conditions
 - 🌍 City and country search with geocoding
@@ -141,17 +142,34 @@ A fantastic **completely free** weather service (unlike TripAdvisor's paid tiers
 ## 📱 Screenshots
 
 <div align="center">
-![Uploading HomeScreen-Nature.jpg…]()
-
-  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-Nature.jpg" width="200" alt="Home Screen - Nature Category" />
-  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/DetailScreen.jpg" width="200" alt="Location Detail Screen" />
-  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/LocationScreen.jpg" width="200" alt="Location Selection Screen" />
-  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-EmptyState.jpg.jpg" width="200" alt="HomeScreen-EmptyState.jpg" />
-  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/SearchScreen-InitialState.jpg" width="200" alt="Search Screen" />
+  
+  **Core Features**
+  
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-Nature.jpg" width="250" alt="Home Screen - Nature Category" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/DetailScreen.jpg" width="250" alt="Location Detail Screen" />
+  
+  <br/>
+  
+  **Location & Search**
+  
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/LocationScreen.jpg" width="250" alt="Location Selection Screen" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/SearchScreen.jpg" width="250" alt="Search Screen" />
+  
+  <br/>
+  
+  **App States**
+  
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/HomeScreen-EmptyState.jpg" width="250" alt="Home Screen Empty State" />
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/screenshots/SearchScreen-InitialState.jpg" width="250" alt="Search Screen Initial State" />
+  
 </div>
 
 <div align="center">
-  <em>From left to right: Home Screen with Nature category, Detailed location view, Smart location selection, Advanced search with filtering, Home Screen empty state and initial state of Search Screen</em>
+  <em>
+  <strong>Top row:</strong> Home screen with Nature category & detailed location view<br/>
+  <strong>Middle row:</strong> Smart location selection with GPS & advanced search with filtering<br/>
+  <strong>Bottom row:</strong> Empty state handling & clean initial search interface
+  </em>
 </div>
 
 ## 🚀 Getting Started
