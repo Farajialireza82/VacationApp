@@ -20,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunner = "com.cromulent.vacationapp.HiltTestRunner"
 
         buildConfigField(
             "String",
@@ -59,6 +59,13 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
+        }
     }
 }
 
@@ -111,4 +118,29 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     ksp (libs.androidx.room.compiler)
     implementation (libs.androidx.room.ktx)
+
+    // Local Tests
+    testImplementation(libs.junit)
+    testImplementation(libs.truth)
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.mockk)
+    debugImplementation(libs.ui.test.manifest)
+
+    // Instrumented Tests
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.core.ktx)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 }
