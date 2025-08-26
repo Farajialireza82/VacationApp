@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.presentation.components.SearchField
@@ -59,7 +60,7 @@ import com.cromulent.vacationapp.util.rememberLocationPermissionHandler
 @Composable
 fun GpsScreen(
     modifier: Modifier = Modifier,
-    viewmodel: GpsViewmodel
+    viewmodel: GpsViewmodel = hiltViewModel()
 ) {
 
     val state = viewmodel.state.collectAsState()

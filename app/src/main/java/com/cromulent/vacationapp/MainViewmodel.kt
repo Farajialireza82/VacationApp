@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.cromulent.vacationapp.domain.manager.LocalUserManager
 import com.cromulent.vacationapp.presentation.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -23,6 +24,7 @@ class MainViewmodel @Inject constructor(
 
     init {
         localUserManager.readAppEntry().onEach { startFromHomeScreen ->
+            delay(600)
             startDestination =
                 if (startFromHomeScreen) Route.HomeNavigation.route else Route.AppStartNavigation.route
         }.launchIn(viewModelScope)

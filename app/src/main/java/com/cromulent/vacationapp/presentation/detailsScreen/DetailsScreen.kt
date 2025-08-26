@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.presentation.components.LocationPhotoSlider
 import com.cromulent.vacationapp.presentation.components.LocationPhotosBottomSheet
@@ -62,7 +63,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
-    viewmodel: DetailsViewmodel,
+    viewmodel: DetailsViewmodel = hiltViewModel<DetailsViewmodel>(),
 ) {
 
     val backDispatcher =

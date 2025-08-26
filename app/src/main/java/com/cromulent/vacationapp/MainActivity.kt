@@ -6,11 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.ui.Modifier
 import com.cromulent.vacationapp.presentation.navigation.MainNavGraph
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             VacationAppTheme {
                 MainNavGraph(
-                    modifier = Modifier,
                     startDestination = viewModel.startDestination
                 )
             }

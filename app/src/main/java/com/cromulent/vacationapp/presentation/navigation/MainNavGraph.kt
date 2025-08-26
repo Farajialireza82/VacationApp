@@ -31,6 +31,7 @@ fun MainNavGraph(
     if (startDestination.isEmpty()) return
 
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {
@@ -42,11 +43,7 @@ fun MainNavGraph(
             composable(
                 route = Route.OnBoardingScreen.route
             ) {
-                val viewmodel: OnBoardingViewModel = hiltViewModel()
-                OnBoardingScreen(
-                    modifier = modifier,
-                    viewmodel = viewmodel
-                )
+                OnBoardingScreen()
             }
         }
 
@@ -57,10 +54,7 @@ fun MainNavGraph(
             composable(
                 route = Route.HomeScreen.route
             ) {
-                val viewmodel = hiltViewModel<HomeViewmodel>()
                 HomeScreen(
-                    modifier = modifier,
-                    viewmodel = viewmodel,
                     openDetailsScreen = {
                         navController.navigate(Route.DetailsScreen.route + "/" + it)
                     },
@@ -79,28 +73,19 @@ fun MainNavGraph(
                     navArgument("location_id") { type = NavType.StringType }
                 )
             ) {
-                val viewmodel = hiltViewModel<DetailsViewmodel>()
-
-                DetailsScreen(viewmodel = viewmodel)
-
+                DetailsScreen()
             }
 
             composable(
                 route = Route.GpsScreen.route,
             ) {
-                val viewmodel = hiltViewModel<GpsViewmodel>()
-                GpsScreen(
-                    viewmodel = viewmodel
-                )
+                GpsScreen()
             }
 
             composable(
                 route = Route.SearchScreen.route,
             ) {
-                val viewmodel = hiltViewModel<SearchViewmodel>()
-                SearchScreen(
-                    viewmodel = viewmodel
-                ){ locationId ->
+                SearchScreen { locationId ->
                     navController.navigate(Route.DetailsScreen.route + "/" + locationId)
                 }
             }

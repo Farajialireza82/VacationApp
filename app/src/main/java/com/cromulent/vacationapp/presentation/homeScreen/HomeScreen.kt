@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.presentation.components.CompactLocationCardList
@@ -48,7 +49,7 @@ import com.cromulent.vacationapp.util.Constants.CATEGORIES
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewmodel: HomeViewmodel,
+    viewmodel: HomeViewmodel = hiltViewModel<HomeViewmodel>(),
     openDetailsScreen: (String) -> Unit,
     openLocationPickerScreen: () -> Unit,
     openSearchScreen: () -> Unit,

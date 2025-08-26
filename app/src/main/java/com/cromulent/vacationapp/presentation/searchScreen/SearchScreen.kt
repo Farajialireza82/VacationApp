@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.model.Category
 import com.cromulent.vacationapp.model.Location
@@ -64,7 +65,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    viewmodel: SearchViewmodel,
+    viewmodel: SearchViewmodel = hiltViewModel<SearchViewmodel>(),
     openDetailsScreen: (locationId: String) -> Unit
 ) {
 
