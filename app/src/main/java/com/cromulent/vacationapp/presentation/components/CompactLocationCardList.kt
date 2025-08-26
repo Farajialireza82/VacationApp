@@ -68,8 +68,8 @@ fun CompactLocationCardList(
                 items(5) {
                     Box(
                         modifier = Modifier
-                            .width(174.dp)
-                            .height(142.dp)
+                            .width(188.dp)
+                            .height(153.dp)
                             .clip(RoundedCornerShape(16.dp))
                             .shimmerEffect()
                     ) {}
