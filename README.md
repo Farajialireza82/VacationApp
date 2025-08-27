@@ -142,11 +142,9 @@ A fantastic **completely free** weather service (unlike TripAdvisor's paid tiers
 ## 🎥 App Demo
 
 <div align="center">
-  <video width="300" controls>
-    <source src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/screenshots/screenrecord.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-    <em>See Travelo in action: location discovery, search, and detailed views</em>
+  📱 <strong><a href="https://github.com/Farajialireza82/VacationApp/raw/main/screenshots/screenrecord.mp4" download>Download App Demo Video</a></strong> (5.98 MB)
+  <br>
+  <em>See Travelo in action: location discovery, search, and detailed views</em>
 </div>
 
 ## 📱 Screenshots
