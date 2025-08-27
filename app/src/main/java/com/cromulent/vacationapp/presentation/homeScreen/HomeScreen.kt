@@ -142,7 +142,7 @@ fun HomeScreen(
 
             Spacer(Modifier.size(32.dp))
 
-            if (state.value.locations.isEmpty() && state.value.isLoading.not()) {
+            if ((state.value.popularLocations + state.value.recommendedLocations).isEmpty() && state.value.isLoading.not()) {
 
                 Column(
                     Modifier
@@ -191,7 +191,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(start = 24.dp),
                     listTitle = "Popular",
-                    locations = state.value.locations,
+                    locations = state.value.popularLocations,
                     isLoading = state.value.isLoading,
                     onLocationClicked = {
                         it?.locationId?.let {
@@ -207,7 +207,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(start = 24.dp),
                     listTitle = "Recommended",
-                    locations = state.value.locations,
+                    locations = state.value.recommendedLocations,
                     isLoading = state.value.isLoading,
                     onLocationClicked = {
                         it?.locationId?.let {
