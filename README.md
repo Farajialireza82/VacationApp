@@ -139,6 +139,14 @@ A fantastic **completely free** weather service (unlike TripAdvisor's paid tiers
 
 *Special thanks to OpenWeatherMap for providing an excellent free service that makes location-based features accessible to all developers!*
 
+## 🎥 App Demo
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Farajialireza82/VacationApp/main/demo/travelo-demo.gif" width="350" alt="Travelo App Demo - Key Features">
+  <br>
+  <em>See Travelo in action: location discovery, search, and detailed views</em>
+</div>
+
 ## 📱 Screenshots
 
 <div align="center">
