@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -151,13 +153,23 @@ fun GpsScreen(
 
             if (state.value.isSearching) {
 
-                Box(
-                    Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                Spacer(Modifier.size(32.dp))
+
+                Column (
+                    Modifier.fillMaxWidth()
+                        .height(240.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(84.dp)
+
+                    CircularProgressIndicator()
+
+                    Spacer(Modifier.size(24.dp))
+
+                    Text(
+                        text = "Searching...",
+                        color = colorResource(R.color.hint_color),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 

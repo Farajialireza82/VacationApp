@@ -45,7 +45,10 @@ class HomeViewmodel @Inject constructor(
 
         if (cachedLocationData.contains(category)) {
             _state.value =
-                _state.value.copy(locations = cachedLocationData[category]!!, isLoading = false)
+                _state.value.copy(
+                    popularLocations = cachedLocationData[category]!!,
+                    recommendedLocations = cachedLocationData[category]!!.asReversed().sortedBy { it?.locationPhotos?.isEmpty() },
+                    isLoading = false)
             return
         }
 
@@ -101,7 +104,8 @@ class HomeViewmodel @Inject constructor(
                                 cachedLocationData + (category to locations)
 
                             _state.value = _state.value.copy(
-                                locations = locations,
+                                popularLocations = locations,
+                                recommendedLocations = locations.asReversed().sortedBy { it?.locationPhotos?.isEmpty() },
                                 isLoading = false
                             )
                         }

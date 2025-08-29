@@ -63,8 +63,8 @@ fun CompactLocationCard(
 
     Box(
         modifier = modifier
-            .width(174.dp)
-            .height(142.dp)
+            .width(188.dp)
+            .height(153.dp)
             .background(
                 color = colorResource(R.color.background_tertiary),
                 shape = RoundedCornerShape(16.dp)

@@ -54,8 +54,8 @@ fun DetailsBottomBar(
 
             Text(
                 modifier = Modifier.wrapContentWidth(),
-                text = priceRange ?: "Free",
-                color = colorResource(R.color.money_color),
+                text = priceRange ?: "Unknown",
+                color = if(priceRange == null) colorResource(R.color.subtitle) else colorResource(R.color.money_color),
                 maxLines = 1,
                 fontSize = fontSize,
                 fontWeight = FontWeight.Bold,
