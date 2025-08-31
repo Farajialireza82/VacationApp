@@ -193,9 +193,10 @@ class VacationRepositoryImpl(
 
         }
 
-        cachedLocationPhotos?.let {
+        if(locationPhotos.data.isNullOrEmpty().not()){
 
-            cacheLocationPhotos(locationId, it)
+            cacheLocationPhotos(locationId, locationPhotos.data)
+
         }
 
         return flow {
