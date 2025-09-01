@@ -3,11 +3,10 @@ package com.cromulent.vacationapp.data.local
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
 import com.cromulent.vacationapp.data.model.LocationPhotoListEntity
-import com.cromulent.vacationapp.di.ManagerModule
-import com.cromulent.vacationapp.di.NetworkModule
-import com.cromulent.vacationapp.di.RepositoryModule
+import com.cromulent.vacationapp.di.AppModule
 import com.cromulent.vacationapp.model.ImageData
 import com.cromulent.vacationapp.model.Images
+import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.model.LocationPhoto
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -23,13 +22,7 @@ import kotlin.collections.mutableListOf
 
 @HiltAndroidTest
 @SmallTest
-@UninstallModules(
-    value = [
-        RepositoryModule::class,
-        ManagerModule::class,
-        NetworkModule::class
-    ]
-)
+@UninstallModules(AppModule::class)
 class LocationPhotosCacheDaoTest {
 
 

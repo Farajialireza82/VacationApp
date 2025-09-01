@@ -2,9 +2,7 @@ package com.cromulent.vacationapp.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
-import com.cromulent.vacationapp.di.NetworkModule
-import com.cromulent.vacationapp.di.ManagerModule
-import com.cromulent.vacationapp.di.RepositoryModule
+import com.cromulent.vacationapp.di.AppModule
 import com.cromulent.vacationapp.model.Address
 import com.cromulent.vacationapp.model.Location
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -20,13 +18,7 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 @SmallTest
-@UninstallModules(
-    value = [
-        RepositoryModule::class,
-        ManagerModule::class,
-        NetworkModule::class
-    ]
-)
+@UninstallModules(AppModule::class)
 class LocationCacheDaoTest {
 
     @get:Rule
