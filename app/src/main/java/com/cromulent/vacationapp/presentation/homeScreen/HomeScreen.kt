@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +44,7 @@ import com.cromulent.vacationapp.presentation.components.FullLocationCardList
 import com.cromulent.vacationapp.presentation.components.SearchField
 import com.cromulent.vacationapp.presentation.homeScreen.components.CategoryChip
 import com.cromulent.vacationapp.presentation.homeScreen.components.HomeTopBar
+import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.NeonBlitz
 import com.cromulent.vacationapp.util.Constants.CATEGORIES
 
@@ -146,6 +148,7 @@ fun HomeScreen(
 
                 Column(
                     Modifier
+                        .testTag(TestTags.EMPTY_STATE)
                         .fillMaxHeight()
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.Top

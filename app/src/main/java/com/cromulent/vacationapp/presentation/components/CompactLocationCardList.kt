@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.common.shimmerEffect
 import com.cromulent.vacationapp.model.Location
+import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.Samples.locationsList
 import kotlin.random.Random
@@ -42,6 +44,7 @@ fun CompactLocationCardList(
 
     Column(
         modifier = modifier
+            .testTag(TestTags.COMPACT_LOCATIONS_LIST)
             .fillMaxWidth()
     ) {
         Row(

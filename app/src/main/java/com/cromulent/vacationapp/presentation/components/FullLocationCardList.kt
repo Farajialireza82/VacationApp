@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +39,7 @@ import coil.compose.AsyncImagePainter
 import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.common.shimmerEffect
 import com.cromulent.vacationapp.model.Location
+import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.Samples.locationsList
 import kotlin.random.Random
@@ -54,6 +56,7 @@ fun FullLocationCardList(
 
     Column(
         modifier = modifier
+            .testTag(TestTags.FULL_LOCATIONS_LIST)
             .fillMaxWidth()
     ) {
         Row(
