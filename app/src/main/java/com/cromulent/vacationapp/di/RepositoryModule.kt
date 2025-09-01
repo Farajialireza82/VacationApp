@@ -33,47 +33,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object RepositoryModule {
 
-    private val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        level = Level.BODY
-    }
-
-    private val client: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(interceptor)
-        .build()
-
-    @Provides
-    @Singleton
-    fun provideLocalUserManager(
-        application: Application
-    ): LocalUserManager = LocalUserManagerImpl(application)
-
-    @Provides
-    @Singleton
-    fun provideVacationApi(): VacationApi {
-
-        return Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(TRIP_ADVISOR_URL)
-            .client(client)
-            .build()
-            .create(VacationApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideOpenWeatherMapApi(): OpenWeatherMapApi {
-
-        return Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(Constants.OPEN_WEATHER_MAP_URL)
-            .client(client)
-            .build()
-            .create(OpenWeatherMapApi::class.java)
-    }
 
     @Provides
     @Singleton
@@ -97,31 +58,9 @@ object AppModule {
         openWeatherMapApi: OpenWeatherMapApi
     ): OpenWeatherMapRepository = OpenWeatherMapRepositoryImpl(openWeatherMapApi)
 
-    @Provides
-    @Singleton
-    fun provideLocationDatabase(
-        application: Application
-    ): LocationDatabase {
-        return Room.databaseBuilder(
-            context = application,
-            klass = LocationDatabase::class.java,
-            name = LOCATION_DATABASE_NAME
-        ).addTypeConverter(LocationTypeConvertor())
-            .fallbackToDestructiveMigration(false)
-            .build()
-    }
 
-    @Provides
-    @Singleton
-    fun provideLocationCacheDao(
-        newsDatabase: LocationDatabase
-    ): LocationCacheDao = newsDatabase.locationCacheDao
 
-    @Provides
-    @Singleton
-    fun provideLocationPhotosCacheDao(
-        newsDatabase: LocationDatabase
-    ): LocationPhotosCacheDao = newsDatabase.locationPhotosCacheDao
+
 
 
 }
