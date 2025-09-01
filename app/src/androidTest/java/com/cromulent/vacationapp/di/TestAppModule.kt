@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [AppModule::class]
+    replaces = [ManagerModule::class]
 )
 object TestAppModule {
 
