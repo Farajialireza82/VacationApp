@@ -143,6 +143,7 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-
-    testImplementation("org.robolectric:robolectric:4.16")
+    testImplementation(libs.robolectric)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.kotlin)
 }
