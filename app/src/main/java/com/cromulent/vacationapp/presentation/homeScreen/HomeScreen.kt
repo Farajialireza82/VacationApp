@@ -148,7 +148,7 @@ fun HomeScreen(
 
                 Column(
                     Modifier
-                        .testTag(TestTags.EMPTY_STATE)
+                        .testTag(TestTags.HOME_SCREEN_EMPTY_STATE)
                         .fillMaxHeight()
                         .padding(horizontal = 24.dp),
                     verticalArrangement = Arrangement.Top

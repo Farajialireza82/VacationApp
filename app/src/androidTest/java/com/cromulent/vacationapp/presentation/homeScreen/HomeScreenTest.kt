@@ -1,8 +1,6 @@
 package com.cromulent.vacationapp.presentation.homeScreen
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -14,19 +12,14 @@ import com.cromulent.vacationapp.model.Images
 import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.model.LocationPhoto
 import com.cromulent.vacationapp.presentation.util.TestTags
-import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.Constants.CATEGORIES
-import com.google.common.truth.Truth.assertThat
 import io.mockk.Runs
-import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,13 +51,6 @@ class HomeScreenTest {
         every { mockViewmodel.currentCoordinates } returns MutableStateFlow(testCoordinates)
         every { mockViewmodel.getNearbyLocations(any(), any()) } just Runs
 
-    }
-
-
-
-    @Test
-    fun homeScreen_displaysCorrectLocationInTopBar() {
-
         composeTestRule.setContent {
             HomeScreen(
                 viewmodel = mockViewmodel,
@@ -73,6 +59,13 @@ class HomeScreenTest {
                 openSearchScreen = mockOpenSearchScreen
             )
         }
+
+    }
+
+
+
+    @Test
+    fun homeScreen_displaysCorrectLocationInTopBar() {
 
         composeTestRule
             .onNodeWithText("San Francisco")
@@ -82,30 +75,14 @@ class HomeScreenTest {
 
     @Test
     fun homeScreen_displaySearchField() {
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
         composeTestRule
-            .onNodeWithTag(TestTags.SEARCH_FIELD)
+            .onNodeWithTag(TestTags.HOME_SCREEN_SEARCH_FIELD)
             .assertIsDisplayed()
     }
 
     @Test
     fun homeScreen_displayCategoryChips() {
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
         CATEGORIES.forEach {
             composeTestRule
@@ -117,15 +94,6 @@ class HomeScreenTest {
 
     @Test
     fun homeScreen_clickingCategoryChipCallsGetNearbyLocations(){
-
-        composeTestRule.setContent {
-                HomeScreen(
-                    viewmodel = mockViewmodel,
-                    openDetailsScreen = mockOpenDetailsScreen,
-                    openLocationPickerScreen = mockOpenLocationPickerScreen,
-                    openSearchScreen = mockOpenSearchScreen
-                )
-        }
 
         composeTestRule
             .onNodeWithText(CATEGORIES[0].title)
@@ -139,17 +107,8 @@ class HomeScreenTest {
     @Test
     fun homeScreen_clickingSearchFieldOpensSearchScreen(){
 
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
-
         composeTestRule
-            .onNodeWithTag(TestTags.SEARCH_FIELD)
+            .onNodeWithTag(TestTags.HOME_SCREEN_SEARCH_FIELD)
             .performClick()
 
         verify { mockOpenSearchScreen() }
@@ -170,17 +129,10 @@ class HomeScreenTest {
             mockViewmodel.state
         } returns MutableStateFlow(emptyState)
 
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
+        
 
             composeTestRule
-                .onNodeWithTag(TestTags.EMPTY_STATE)
+                .onNodeWithTag(TestTags.HOME_SCREEN_EMPTY_STATE)
                 .assertIsDisplayed()
 
     }
@@ -199,15 +151,6 @@ class HomeScreenTest {
         every {
             mockViewmodel.state
         } returns MutableStateFlow(mockState)
-
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
 
         composeTestRule
@@ -233,15 +176,6 @@ class HomeScreenTest {
 
         every { mockViewmodel.state } returns MutableStateFlow(mockState)
 
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
-
         composeTestRule
             .onNodeWithText(errorMessage)
             .assertIsDisplayed()
@@ -250,15 +184,6 @@ class HomeScreenTest {
 
     @Test
     fun homeScreen_refreshButtonCallsGetNearbyLocationWithClearCache(){
-
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
         composeTestRule
             .onNodeWithTag(TestTags.APP_LOGO)
@@ -275,15 +200,6 @@ class HomeScreenTest {
 
         every { mockViewmodel.currentCoordinates } returns MutableStateFlow(null)
 
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
-
         coVerify {
             mockOpenLocationPickerScreen()
         }
@@ -295,15 +211,6 @@ class HomeScreenTest {
 
         val coordinatesFlow = MutableStateFlow(testCoordinates)
         every { mockViewmodel.currentCoordinates } returns coordinatesFlow
-
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
         coordinatesFlow.value = CoordinatesData("123.12", "123,23", "NYC")
 
@@ -323,16 +230,6 @@ class HomeScreenTest {
         )
 
         every { mockViewmodel.state } returns MutableStateFlow(errorState)
-
-
-        composeTestRule.setContent {
-            HomeScreen(
-                viewmodel = mockViewmodel,
-                openDetailsScreen = mockOpenDetailsScreen,
-                openLocationPickerScreen = mockOpenLocationPickerScreen,
-                openSearchScreen = mockOpenSearchScreen
-            )
-        }
 
         composeTestRule
             .onNodeWithText("Refresh")
