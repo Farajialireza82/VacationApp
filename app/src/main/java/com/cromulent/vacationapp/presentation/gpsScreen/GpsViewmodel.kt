@@ -80,7 +80,8 @@ class GpsViewmodel @Inject constructor(
                             } else {
                                 _state.value = _state.value.copy(
                                     isSearching = false,
-                                    searchResults = it.data ?: listOf()
+                                    searchResults = it.data ?: listOf(),
+                                    error = null
                                 )
                             }
                         }
