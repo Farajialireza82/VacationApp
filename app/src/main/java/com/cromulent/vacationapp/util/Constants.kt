@@ -24,6 +24,8 @@ object Constants {
         Category(key = "restaurants", title =  "Restaurants"),
         Category(key = "geos", title =  "Nature"),
     )
+
+    val SEARCH_CATEGORIES = listOf(Category("all", "All")) + CATEGORIES
 }
 
 

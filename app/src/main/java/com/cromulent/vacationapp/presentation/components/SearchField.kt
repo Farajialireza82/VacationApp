@@ -1,16 +1,12 @@
 package com.cromulent.vacationapp.presentation.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,8 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -40,7 +34,6 @@ import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchField(
@@ -62,7 +55,7 @@ fun SearchField(
 
     Column(
         modifier = modifier
-            .testTag(TestTags.SEARCH_FIELD)
+            .testTag(TestTags.HOME_SCREEN_SEARCH_FIELD)
             .fillMaxWidth()
             .clip(
                 shape = RoundedCornerShape(24.dp)
@@ -80,6 +73,8 @@ fun SearchField(
 
     ) {
         TextField(
+            modifier = Modifier
+                .testTag(TestTags.SEARCH_FIELD_TEXT_FIELD),
             value = text,
             enabled = isSearchable,
             onValueChange = { text = it },
@@ -144,6 +139,7 @@ fun SearchField(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .testTag(TestTags.HOME_SCREEN_SEARCH_FIELD)
             .clip(
                 shape = RoundedCornerShape(24.dp)
             )
@@ -155,6 +151,7 @@ fun SearchField(
     ) {
         TextField(
             modifier = Modifier
+                .testTag(TestTags.SEARCH_FIELD_TEXT_FIELD)
                 .focusRequester(focusRequester),
             value = text,
             onValueChange = {

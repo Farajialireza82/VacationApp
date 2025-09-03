@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,8 +57,12 @@ import com.cromulent.vacationapp.model.Category
 import com.cromulent.vacationapp.model.Location
 import com.cromulent.vacationapp.presentation.components.SearchField
 import com.cromulent.vacationapp.presentation.homeScreen.components.CategoryChip
+import com.cromulent.vacationapp.presentation.util.TestTags
+import com.cromulent.vacationapp.presentation.util.TestTags.SEARCH_SCREEN_EMPTY_STATE
+import com.cromulent.vacationapp.presentation.util.TestTags.SEARCH_SCREEN_START_STATE
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.Constants.CATEGORIES
+import com.cromulent.vacationapp.util.Constants.SEARCH_CATEGORIES
 import com.cromulent.vacationapp.util.Samples
 import kotlinx.coroutines.delay
 
@@ -74,8 +79,7 @@ fun SearchScreen(
     val backDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    var searchCategories = listOf(Category("all", "All")) + CATEGORIES
-    var selectedCategory by rememberSaveable { mutableStateOf(searchCategories[0]) }
+    var selectedCategory by rememberSaveable { mutableStateOf(SEARCH_CATEGORIES[0]) }
 
     var searchQuery by rememberSaveable { mutableStateOf("") }
 
@@ -85,10 +89,13 @@ fun SearchScreen(
 
     LaunchedEffect(true) {
 
-        if(isFirstRecomposition){
-            focusRequester.requestFocus()
-            isFirstRecomposition = false
-        }
+        //wrapped in try catch to avoid crashes during test runs
+        try {
+            if (isFirstRecomposition) {
+                focusRequester.requestFocus()
+                isFirstRecomposition = false
+            }
+        }catch (_: Exception){}
 
     }
 
@@ -109,6 +116,7 @@ fun SearchScreen(
                 navigationIcon = {
                     Box(
                         modifier = Modifier
+                            .testTag(TestTags.BACK_BUTTON)
                             .padding(horizontal = 12.dp)
                             .size(50.dp)
                             .background(
@@ -158,8 +166,10 @@ fun SearchScreen(
                     .padding(start = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                items(searchCategories) { category ->
+                items(SEARCH_CATEGORIES) { category ->
                     CategoryChip(
+                        modifier = Modifier
+                            .testTag(category.key),
                         text = category.title,
                         isSelected = selectedCategory == category
                     ) {
@@ -181,13 +191,18 @@ fun SearchScreen(
 
 
             if (state.value.isLoading) {
-                LoadingState()
+                LoadingState(
+                    modifier = Modifier
+                        .testTag(TestTags.SEARCH_SCREEN_LOADING_STATE)
+                )
                 return@Scaffold
             }
 
             if (state.value.data == null) {
 
                 EmptyState(
+                    modifier = Modifier
+                        .testTag(SEARCH_SCREEN_START_STATE),
                     title = "Start exploring",
                     subtitle = "Find hotels, attractions, and restaurants worldwide"
                 )
@@ -197,14 +212,18 @@ fun SearchScreen(
             }
 
             if (state.value.data?.isEmpty() == true) {
-                EmptyState()
+                EmptyState(
+                    modifier = Modifier
+                        .testTag(SEARCH_SCREEN_EMPTY_STATE)
+                )
                 return@Scaffold
 
             }
 
             LazyColumn(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)) {
+                    .padding(horizontal = 20.dp)
+            ) {
                 items(state.value.data!!) {
 
                     SearchItem(
@@ -314,7 +333,7 @@ private fun SearchItem(
 
     ElevatedCard(
         modifier = modifier
-            .clickable{
+            .clickable {
                 onClick()
             },
         colors = CardDefaults.cardColors().copy(
@@ -337,31 +356,31 @@ private fun SearchItem(
                 fontSize = 18.sp
             )
 
-                Spacer(Modifier.size(8.dp))
+            Spacer(Modifier.size(8.dp))
 
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
-                    Icon(
-                        modifier = Modifier
-                            .size(12.dp),
-                        imageVector = Icons.Outlined.LocationOn,
-                        tint = colorResource(R.color.hint_color),
-                        contentDescription = "Location Icon"
-                    )
+                Icon(
+                    modifier = Modifier
+                        .size(12.dp),
+                    imageVector = Icons.Outlined.LocationOn,
+                    tint = colorResource(R.color.hint_color),
+                    contentDescription = "Location Icon"
+                )
 
-                    Spacer(Modifier.size(4.dp))
+                Spacer(Modifier.size(4.dp))
 
-                    Text(
-                        modifier = Modifier,
-                        textAlign = TextAlign.Center,
-                        text = location.addressObject?.getAddressTitle() ?: "ADDRESS TITLE",
-                        color = colorResource(R.color.hint_color),
-                        fontSize = 12.sp
-                    )
-                }
+                Text(
+                    modifier = Modifier,
+                    textAlign = TextAlign.Center,
+                    text = location.addressObject?.getAddressTitle() ?: "ADDRESS TITLE",
+                    color = colorResource(R.color.hint_color),
+                    fontSize = 12.sp
+                )
+            }
 
         }
 
@@ -376,9 +395,7 @@ private fun Preview() {
 
     VacationAppTheme {
 
-        SearchItem(
-            location = Samples.location
-        ){}
+        SearchScreen{}
     }
 
 }
