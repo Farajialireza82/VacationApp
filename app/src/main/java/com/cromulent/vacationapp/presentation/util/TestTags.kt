@@ -26,9 +26,8 @@ object TestTags {
 
     const val DETAILS_SCREEN_EMPTY_STATE = "Details Screen Empty State"
 
-    const val GPS_SCREEN_LOADING_STATE = "GPS Screen Loading State"
-
     const val AMENITIES_BOTTOM_SHEET = "Amenities Bottom Sheet"
 
+    const val GPS_SCREEN_LOADING_STATE = "GPS Screen Loading State"
 
 }
