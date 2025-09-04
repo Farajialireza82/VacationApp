@@ -29,10 +29,12 @@ import com.cromulent.vacationapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmenitiesBottomSheet(
+    modifier: Modifier = Modifier,
     amenities: List<String>,
     onDismiss: () -> Unit
 ) {
     ModalBottomSheet(
+        modifier = modifier,
         containerColor = colorResource(R.color.white),
         onDismissRequest = onDismiss,
         dragHandle = { BottomSheetDefaults.DragHandle() }
