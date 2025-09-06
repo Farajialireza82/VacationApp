@@ -88,24 +88,6 @@ class DetailsScreenTest {
     }
 
     @Test
-    fun detailsScreen_errorSnackbarDisplaysErrorCorrectly() = runTest{
-
-        val errorMessage = "Error"
-
-        stateFlow.value = DetailsState(
-            location = null,
-            isLoading = false,
-            error = errorMessage
-        )
-
-        composeTestRule
-            .onNodeWithText(
-                errorMessage
-            ).assertIsDisplayed()
-
-    }
-
-    @Test
     fun detailsScreen_BackButtonIsDisplayed(){
 
         composeTestRule

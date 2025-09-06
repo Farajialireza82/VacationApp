@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,7 @@ import com.cromulent.vacationapp.R
 import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.presentation.components.SearchField
 import com.cromulent.vacationapp.presentation.components.TraveloButton
+import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 import com.cromulent.vacationapp.util.openAppSettings
 import com.cromulent.vacationapp.util.rememberLocationPermissionHandler
@@ -156,7 +158,9 @@ fun GpsScreen(
                 Spacer(Modifier.size(32.dp))
 
                 Column (
-                    Modifier.fillMaxWidth()
+                    Modifier
+                        .testTag(TestTags.GPS_SCREEN_LOADING_STATE)
+                        .fillMaxWidth()
                         .height(240.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
@@ -176,7 +180,9 @@ fun GpsScreen(
             } else if (state.value.searchResults.isEmpty()) {
 
                 Box(
-                    Modifier.fillMaxSize(),
+                    Modifier
+                        .fillMaxSize()
+                        .testTag(TestTags.GPS_SCREEN_START_STATE),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -274,6 +280,8 @@ fun GpsScreenTopBar(
         Spacer(Modifier.size(16.dp))
 
         TraveloButton(
+            modifier = Modifier
+                .testTag(TestTags.GPS_SCREEN_LOCATE_BUTTON),
             text = "Use Current Location",
             leadingIcon = Icons.Rounded.GpsFixed,
             isLoading = isLocating,

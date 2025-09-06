@@ -30,4 +30,9 @@ object TestTags {
 
     const val GPS_SCREEN_LOADING_STATE = "GPS Screen Loading State"
 
+    const val GPS_SCREEN_START_STATE = "GPS Screen Start State"
+
+    const val GPS_SCREEN_LOCATE_BUTTON = "GPS Screen Locate Button"
+
+
 }

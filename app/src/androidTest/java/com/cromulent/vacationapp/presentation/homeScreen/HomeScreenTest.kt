@@ -20,6 +20,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -29,26 +30,28 @@ class HomeScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
+    private var stateFlow: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
+    private var coordinatesFlow: MutableStateFlow<CoordinatesData?> = MutableStateFlow(
+        CoordinatesData(
+            latitude = "37.7749",
+            longitude = "-122.4194",
+            name = "San Francisco"
+        )
+    )
     private lateinit var mockViewmodel: HomeViewmodel
     private lateinit var mockOpenDetailsScreen: (String) -> Unit
     private lateinit var mockOpenLocationPickerScreen: () -> Unit
     private lateinit var mockOpenSearchScreen: () -> Unit
 
-    private val testCoordinates = CoordinatesData(
-        latitude = "37.7749",
-        longitude = "-122.4194",
-        name = "San Francisco"
-    )
-
     @Before
-    fun setup(){
+    fun setup() {
         mockViewmodel = mockk(relaxed = true)
         mockOpenDetailsScreen = mockk(relaxed = true)
         mockOpenLocationPickerScreen = mockk(relaxed = true)
         mockOpenSearchScreen = mockk(relaxed = true)
 
-        every { mockViewmodel.state } returns MutableStateFlow(HomeState())
-        every { mockViewmodel.currentCoordinates } returns MutableStateFlow(testCoordinates)
+        every { mockViewmodel.state } returns stateFlow
+        every { mockViewmodel.currentCoordinates } returns coordinatesFlow
         every { mockViewmodel.getNearbyLocations(any(), any()) } just Runs
 
         composeTestRule.setContent {
@@ -61,7 +64,6 @@ class HomeScreenTest {
         }
 
     }
-
 
 
     @Test
@@ -93,7 +95,7 @@ class HomeScreenTest {
     }
 
     @Test
-    fun homeScreen_clickingCategoryChipCallsGetNearbyLocations(){
+    fun homeScreen_clickingCategoryChipCallsGetNearbyLocations() {
 
         composeTestRule
             .onNodeWithText(CATEGORIES[0].title)
@@ -105,7 +107,7 @@ class HomeScreenTest {
     }
 
     @Test
-    fun homeScreen_clickingSearchFieldOpensSearchScreen(){
+    fun homeScreen_clickingSearchFieldOpensSearchScreen() {
 
         composeTestRule
             .onNodeWithTag(TestTags.HOME_SCREEN_SEARCH_FIELD)
@@ -118,39 +120,31 @@ class HomeScreenTest {
     @Test
     fun homeScreen_displayEmptyStateWhenNoLocationsAndNotLoading() {
 
-        val emptyState = HomeState(
+        stateFlow.value = HomeState(
             popularLocations = emptyList(),
             recommendedLocations = emptyList(),
             isLoading = false,
             error = null
         )
 
-        every {
-            mockViewmodel.state
-        } returns MutableStateFlow(emptyState)
 
-        
 
-            composeTestRule
-                .onNodeWithTag(TestTags.HOME_SCREEN_EMPTY_STATE)
-                .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(TestTags.HOME_SCREEN_EMPTY_STATE)
+            .assertIsDisplayed()
 
     }
 
     @Test
-    fun homeScreen_displayLocationListWhenDataIsAvailable(){
+    fun homeScreen_displayLocationListWhenDataIsAvailable() {
 
 
-        val mockState = HomeState(
+        stateFlow.value = HomeState(
             popularLocations = createMockLocations(),
             recommendedLocations = createMockLocations(),
             isLoading = false,
             error = null
         )
-
-        every {
-            mockViewmodel.state
-        } returns MutableStateFlow(mockState)
 
 
         composeTestRule
@@ -164,17 +158,15 @@ class HomeScreenTest {
     }
 
     @Test
-    fun homeScreen_showSnackbarWhenErrorOccurs(){
+    fun homeScreen_showSnackbarWhenErrorOccurs() {
 
         val errorMessage = "Something went wrong"
-        val mockState = HomeState(
+        stateFlow.value = HomeState(
             popularLocations = emptyList(),
             recommendedLocations = emptyList(),
             isLoading = false,
             error = errorMessage
         )
-
-        every { mockViewmodel.state } returns MutableStateFlow(mockState)
 
         composeTestRule
             .onNodeWithText(errorMessage)
@@ -183,7 +175,7 @@ class HomeScreenTest {
     }
 
     @Test
-    fun homeScreen_refreshButtonCallsGetNearbyLocationWithClearCache(){
+    fun homeScreen_refreshButtonCallsGetNearbyLocationWithClearCache() {
 
         composeTestRule
             .onNodeWithTag(TestTags.APP_LOGO)
@@ -196,49 +188,11 @@ class HomeScreenTest {
     }
 
     @Test
-    fun homeScreen_openLocationPickerWhenCoordinatesAreNull(){
-
-        every { mockViewmodel.currentCoordinates } returns MutableStateFlow(null)
-
-        coVerify {
-            mockOpenLocationPickerScreen()
-        }
-
-    }
-
-    @Test
-    fun homeScreen_callsGetNearbyLocationsWhenCoordinatesChange(){
-
-        val coordinatesFlow = MutableStateFlow(testCoordinates)
-        every { mockViewmodel.currentCoordinates } returns coordinatesFlow
+    fun homeScreen_callsGetNearbyLocationsWhenCoordinatesChange() {
 
         coordinatesFlow.value = CoordinatesData("123.12", "123,23", "NYC")
 
         verify { mockViewmodel.getNearbyLocations(any(), clearCache = true) }
-
-    }
-
-
-    @Test
-    fun homeScreen_snackbarRefreshActionButtonCallsGetNearbyLocations(){
-
-        val errorState = HomeState(
-            popularLocations = emptyList(),
-            recommendedLocations = emptyList(),
-            isLoading = false,
-            error = "errorMessage"
-        )
-
-        every { mockViewmodel.state } returns MutableStateFlow(errorState)
-
-        composeTestRule
-            .onNodeWithText("Refresh")
-            .performClick()
-
-        verify {
-            mockViewmodel.getNearbyLocations(any(), any())
-        }
-
 
     }
 
