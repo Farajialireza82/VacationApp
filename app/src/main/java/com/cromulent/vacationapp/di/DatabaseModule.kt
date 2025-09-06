@@ -33,13 +33,33 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserManager(
+    fun provideLocationDatabase(
         application: Application
-    ): LocalUserManager = LocalUserManagerImpl(application)
+    ): LocationDatabase {
+        return Room.databaseBuilder(
+            context = application,
+            klass = LocationDatabase::class.java,
+            name = LOCATION_DATABASE_NAME
+        ).addTypeConverter(LocationTypeConvertor())
+            .fallbackToDestructiveMigration(false)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationCacheDao(
+        newsDatabase: LocationDatabase
+    ): LocationCacheDao = newsDatabase.locationCacheDao
+
+    @Provides
+    @Singleton
+    fun provideLocationPhotosCacheDao(
+        newsDatabase: LocationDatabase
+    ): LocationPhotosCacheDao = newsDatabase.locationPhotosCacheDao
 
 
 }

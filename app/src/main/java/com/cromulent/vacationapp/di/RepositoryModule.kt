@@ -33,13 +33,29 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object RepositoryModule {
+
 
     @Provides
     @Singleton
-    fun provideLocalUserManager(
-        application: Application
-    ): LocalUserManager = LocalUserManagerImpl(application)
+    fun provideVacationRepository(
+        vacationApi: VacationApi,
+        locationCacheDao: LocationCacheDao,
+        locationPhotosCacheDao: LocationPhotosCacheDao,
+    ): VacationRepository =
+        VacationRepositoryImpl(vacationApi, locationCacheDao, locationPhotosCacheDao)
 
+    @Provides
+    @Singleton
+    fun provideGpsRepository(
+        application: Application,
+        openWeatherMapApi: OpenWeatherMapApi
+    ): GpsRepository = GpsRepositoryImpl(application, openWeatherMapApi)
+
+    @Provides
+    @Singleton
+    fun provideOpenWeatherMapRepository(
+        openWeatherMapApi: OpenWeatherMapApi
+    ): OpenWeatherMapRepository = OpenWeatherMapRepositoryImpl(openWeatherMapApi)
 
 }
