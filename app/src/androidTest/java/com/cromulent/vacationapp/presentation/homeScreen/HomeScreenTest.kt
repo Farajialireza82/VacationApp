@@ -5,6 +5,9 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeDown
 import com.cromulent.vacationapp.model.Address
 import com.cromulent.vacationapp.model.CoordinatesData
 import com.cromulent.vacationapp.model.ImageData
@@ -121,8 +124,8 @@ class HomeScreenTest {
     fun homeScreen_displayEmptyStateWhenNoLocationsAndNotLoading() {
 
         stateFlow.value = HomeState(
-            popularLocations = emptyList(),
-            recommendedLocations = emptyList(),
+            popularLocations = mapOf(),
+            recommendedLocations = mapOf(),
             isLoading = false,
             error = null
         )
@@ -140,8 +143,8 @@ class HomeScreenTest {
 
 
         stateFlow.value = HomeState(
-            popularLocations = createMockLocations(),
-            recommendedLocations = createMockLocations(),
+            popularLocations = createMockLocationMap(),
+            recommendedLocations = createMockLocationMap(),
             isLoading = false,
             error = null
         )
@@ -162,8 +165,8 @@ class HomeScreenTest {
 
         val errorMessage = "Something went wrong"
         stateFlow.value = HomeState(
-            popularLocations = emptyList(),
-            recommendedLocations = emptyList(),
+            popularLocations = emptyMap(),
+            recommendedLocations = emptyMap(),
             isLoading = false,
             error = errorMessage
         )
@@ -193,6 +196,29 @@ class HomeScreenTest {
         coordinatesFlow.value = CoordinatesData("123.12", "123,23", "NYC")
 
         verify { mockViewmodel.getNearbyLocations(any(), clearCache = true) }
+
+    }
+
+    @Test
+    fun homeScreen_pullToRefreshCallsGetNearbyLocationWithClearCache(){
+
+        composeTestRule
+            .onNodeWithTag(TestTags.HOME_SCREEN_PULL_TO_REFRESH)
+            .performTouchInput {
+             swipeDown()
+            }
+
+        composeTestRule.waitForIdle()
+
+        verify {
+            mockViewmodel.getNearbyLocations(any(), clearCache = true)
+        }
+
+    }
+
+    private fun createMockLocationMap(): Map<String, List<Location>>{
+
+        return mapOf("hotels" to createMockLocations())
 
     }
 

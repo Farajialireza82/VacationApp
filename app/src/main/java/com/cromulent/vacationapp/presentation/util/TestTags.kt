@@ -34,5 +34,7 @@ object TestTags {
 
     const val GPS_SCREEN_LOCATE_BUTTON = "GPS Screen Locate Button"
 
+    const val HOME_SCREEN_PULL_TO_REFRESH = "Home screen pull to refresh"
+
 
 }

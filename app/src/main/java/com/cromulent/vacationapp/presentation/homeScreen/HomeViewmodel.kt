@@ -32,7 +32,7 @@ class HomeViewmodel @Inject constructor(
         clearCache: Boolean = false
     ) {
 
-        if(clearCache){
+        if (clearCache) {
             cachedLocationData = mutableMapOf()
         }
 
@@ -46,9 +46,12 @@ class HomeViewmodel @Inject constructor(
         if (cachedLocationData.contains(category)) {
             _state.value =
                 _state.value.copy(
-                    popularLocations = cachedLocationData[category]!!,
-                    recommendedLocations = cachedLocationData[category]!!.asReversed().sortedBy { it?.locationPhotos?.isEmpty() },
-                    isLoading = false)
+                    popularLocations = mapOf(category to cachedLocationData[category]!!),
+                    recommendedLocations = mapOf(
+                        category to cachedLocationData[category]!!.asReversed()
+                            .sortedBy { it?.locationPhotos?.isEmpty() }),
+                    isLoading = false
+                )
             return
         }
 
@@ -88,7 +91,8 @@ class HomeViewmodel @Inject constructor(
 
                                             is Resource.Success<*> -> {
                                                 val index = locations.indexOf(location)
-                                                locations[index]?.locationPhotos = photoResource.data
+                                                locations[index]?.locationPhotos =
+                                                    photoResource.data
 
                                             }
                                         }
@@ -104,8 +108,10 @@ class HomeViewmodel @Inject constructor(
                                 cachedLocationData + (category to locations)
 
                             _state.value = _state.value.copy(
-                                popularLocations = locations,
-                                recommendedLocations = locations.asReversed().sortedBy { it?.locationPhotos?.isEmpty() },
+                                popularLocations = mapOf(category to locations),
+                                recommendedLocations = mapOf(
+                                    category to locations.asReversed()
+                                        .sortedBy { it?.locationPhotos?.isEmpty() }),
                                 isLoading = false
                             )
                         }
