@@ -39,7 +39,7 @@ fun CompactLocationCardList(
     listTitle: String,
     locations: List<Location?>,
     isLoading: Boolean = false,
-    onLocationClicked: (Location?) -> Unit
+    onLocationClicked: (String) -> Unit
 ) {
 
     Column(

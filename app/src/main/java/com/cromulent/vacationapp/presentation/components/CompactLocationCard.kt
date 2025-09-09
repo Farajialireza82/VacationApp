@@ -46,7 +46,7 @@ import com.cromulent.vacationapp.util.Samples.location
 fun CompactLocationCard(
     modifier: Modifier = Modifier,
     location: Location?,
-    onClick: (Location) -> Unit
+    onClick: (String) -> Unit
 ) {
 
     val locationPhotos = location?.locationPhotos
@@ -73,7 +73,7 @@ fun CompactLocationCard(
             .clickable {
 
                 location?.let {
-                    onClick(location)
+                    onClick(location.locationId)
                 }
             }
     ) {

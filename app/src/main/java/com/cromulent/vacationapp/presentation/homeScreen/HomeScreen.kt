@@ -55,6 +55,7 @@ import com.cromulent.vacationapp.presentation.components.FullLocationCardList
 import com.cromulent.vacationapp.presentation.components.MyPullToRefreshBox
 import com.cromulent.vacationapp.presentation.components.SearchField
 import com.cromulent.vacationapp.presentation.homeScreen.components.CategoryChip
+import com.cromulent.vacationapp.presentation.homeScreen.components.HomeScreenEmptyState
 import com.cromulent.vacationapp.presentation.homeScreen.components.HomeTopBar
 import com.cromulent.vacationapp.presentation.util.TestTags
 import com.cromulent.vacationapp.ui.theme.NeonBlitz
@@ -70,35 +71,38 @@ fun HomeScreen(
     openSearchScreen: () -> Unit,
 ) {
 
-    val state = viewmodel.state.collectAsState()
-    val currentCoordinates = viewmodel.currentCoordinates.collectAsState()
+    val state = viewmodel.state.collectAsState().value
+    val currentCoordinates = viewmodel.currentCoordinates.collectAsState().value
     var lastCoordinates: CoordinatesData? by rememberSaveable { mutableStateOf(null) }
 
     var selectedCategory by rememberSaveable { mutableStateOf(CATEGORIES[0]) }
     var snackbarHostState = remember { SnackbarHostState() }
 
-    var shouldShowShimmer = state.value.isLoading
+    var shouldShowShimmer = state.isLoading
 
-    var shouldShowRefreshIndicator = state.value.isLoading && state.value.popularLocations.isNullOrEmpty(
+    var shouldShowRefreshIndicator = state.isLoading && state.popularLocations.isNullOrEmpty(
         selectedCategory
     ).not()
 
+    var shouldShowEmptyState =
+        state.popularLocations.isNullOrEmpty(selectedCategory) && state.isLoading.not()
+
     LaunchedEffect(currentCoordinates) {
-        if (currentCoordinates.value == null) {
+        if (currentCoordinates == null) {
             openLocationPickerScreen()
             return@LaunchedEffect
         } else {
-            if (currentCoordinates.value != lastCoordinates) {
+            if (currentCoordinates != lastCoordinates) {
                 viewmodel.getNearbyLocations(selectedCategory.key, clearCache = true)
-                lastCoordinates = currentCoordinates.value
+                lastCoordinates = currentCoordinates
             }
         }
     }
 
-    LaunchedEffect(state.value.error) {
-        if (state.value.error?.isNotEmpty() == true) {
+    LaunchedEffect(state.error) {
+        if (state.error?.isNotEmpty() == true) {
             val result = snackbarHostState.showSnackbar(
-                message = state.value.error ?: "Something went wrong",
+                message = state.error,
                 withDismissAction = true,
                 actionLabel = "Refresh",
                 duration = SnackbarDuration.Short
@@ -117,13 +121,11 @@ fun HomeScreen(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .padding(horizontal = 24.dp),
-                locationText = currentCoordinates.value?.getTitle() ?: "NO TITLE",
+                locationText = currentCoordinates?.getTitle(),
                 onRefreshClicked = {
                     viewmodel.getNearbyLocations(selectedCategory.key, clearCache = true)
                 },
-                onLocationClicked = {
-                    openLocationPickerScreen()
-                }
+                onLocationClicked = openLocationPickerScreen
             )
         },
         snackbarHost = {
@@ -138,7 +140,7 @@ fun HomeScreen(
                 .testTag(TestTags.HOME_SCREEN_PULL_TO_REFRESH),
             isRefreshing = shouldShowRefreshIndicator,
             onRefresh = {
-                if (state.value.isLoading) return@MyPullToRefreshBox
+                if (state.isLoading) return@MyPullToRefreshBox
                 viewmodel.getNearbyLocations(selectedCategory.key, clearCache = true)
             }
         ) {
@@ -158,100 +160,28 @@ fun HomeScreen(
 
                 Spacer(Modifier.size(18.dp))
 
-                LazyRow(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    items(CATEGORIES) { category ->
-                        CategoryChip(
-                            text = category.title,
-                            isSelected = selectedCategory == category
-                        ) {
-                            selectedCategory = category
-                            viewmodel.getNearbyLocations(selectedCategory.key)
-                        }
-                    }
+                CategoriesRow(selectedCategory) { category ->
+                    selectedCategory = category
+                    viewmodel.getNearbyLocations(selectedCategory.key)
                 }
 
                 Spacer(Modifier.size(32.dp))
 
-                if (state.value.popularLocations.isNullOrEmpty(selectedCategory) && state.value.isLoading.not()
-                ) {
+                if (shouldShowEmptyState) {
 
-                    Column(
-                        Modifier
+                    HomeScreenEmptyState(
+                        modifier = Modifier
                             .testTag(TestTags.HOME_SCREEN_EMPTY_STATE)
-                            .fillMaxHeight()
-                            .padding(horizontal = 24.dp),
-                        verticalArrangement = Arrangement.Top
-                    ) {
-
-                        Image(
-                            modifier = Modifier,
-                            painter = painterResource(R.drawable.empty_state),
-                            contentDescription = "No results photo"
-                        )
-
-                        Spacer(Modifier.size(16.dp))
-
-
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = NeonBlitz,
-                            color = colorResource(R.color.primary),
-                            text = "No results found for this location",
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-
-                        Spacer(Modifier.size(18.dp))
-
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            fontSize = 14.sp,
-                            color = colorResource(R.color.subtitle),
-                            text = "Try changing your category or location",
-                            fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
+                    )
 
                 } else {
 
-                    FullLocationCardList(
-                        modifier = Modifier
-                            .padding(start = 24.dp),
-                        listTitle = "Popular",
-                        locations = state.value.popularLocations.getLocationList(selectedCategory),
-                        isLoading = shouldShowShimmer ,
-                        onLocationClicked = {
-                            it?.locationId?.let {
-                                openDetailsScreen(it)
-                            }
-                        },
-                        onSeeAllClicked = null,
-                    )
-
-                    Spacer(Modifier.size(32.dp))
-
-                    CompactLocationCardList(
-                        modifier = Modifier
-                            .padding(start = 24.dp),
-                        listTitle = "Recommended",
-                        locations = state.value.recommendedLocations.getLocationList(selectedCategory),
-                        isLoading = shouldShowShimmer,
-                        onLocationClicked = {
-                            it?.locationId?.let {
-                                openDetailsScreen(it)
-                            }
-                        },
-                    )
+                   LocationsList(
+                       popularLocations = state.popularLocations.getLocationList(selectedCategory),
+                       recommendedLocations = state.recommendedLocations.getLocationList(selectedCategory),
+                       shouldShowShimmer = shouldShowShimmer,
+                       openDetailsScreen = openDetailsScreen
+                   )
 
                 }
 
@@ -260,6 +190,61 @@ fun HomeScreen(
         }
     }
 
+}
+
+@Composable
+private fun LocationsList(
+    modifier: Modifier = Modifier,
+    popularLocations: List<Location?>,
+    recommendedLocations: List<Location?>,
+    shouldShowShimmer: Boolean,
+    openDetailsScreen: (String) -> Unit,) {
+
+    Column(modifier) {
+        FullLocationCardList(
+            modifier = Modifier
+                .padding(start = 24.dp),
+            listTitle = "Popular",
+            locations = popularLocations,
+            isLoading = shouldShowShimmer,
+            onLocationClicked = openDetailsScreen,
+            onSeeAllClicked = null,
+        )
+
+        Spacer(Modifier.size(32.dp))
+
+        CompactLocationCardList(
+            modifier = Modifier
+                .padding(start = 24.dp),
+            listTitle = "Recommended",
+            locations = recommendedLocations,
+            isLoading = shouldShowShimmer,
+            onLocationClicked = openDetailsScreen,
+        )
+    }
+
+}
+
+@Composable
+private fun CategoriesRow(
+    selectedCategory: Category,
+    onCategoryClicked: (Category) -> Unit
+) {
+    LazyRow(
+        Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        items(CATEGORIES) { category ->
+            CategoryChip(
+                text = category.title,
+                isSelected = selectedCategory == category
+            ) {
+                onCategoryClicked(category)
+            }
+        }
+    }
 }
 
 private fun Map<String, List<Location?>>.isNullOrEmpty(category: Category): Boolean {
@@ -274,7 +259,6 @@ private fun Map<String, List<Location?>>.isNullOrEmpty(category: Category): Bool
     }
 
 }
-
 
 
 private fun Map<String, List<Location?>>.getLocationList(category: Category): List<Location?> {

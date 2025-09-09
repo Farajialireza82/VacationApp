@@ -30,7 +30,7 @@ import com.cromulent.vacationapp.ui.theme.VacationAppTheme
 @Composable
 fun HomeTopBar(
     modifier: Modifier = Modifier,
-    locationText: String,
+    locationText: String?,
     onRefreshClicked: () -> Unit,
     onLocationClicked: () -> Unit
 ) {
@@ -68,7 +68,7 @@ fun HomeTopBar(
         LocationChip(
             modifier = Modifier
                 .weight(3f),
-            text = locationText,
+            text = locationText ?: "NULL",
             onClick = onLocationClicked
         )
     }

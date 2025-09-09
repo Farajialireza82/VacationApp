@@ -49,7 +49,7 @@ fun FullLocationCard(
     modifier: Modifier = Modifier,
     location: Location?,
     isBookmarked: Boolean = false,
-    onClick: (Location?) -> Unit
+    onClick: (String) -> Unit
 ) {
 
     val locationPhotos = location?.locationPhotos
@@ -70,7 +70,11 @@ fun FullLocationCard(
             .height(240.dp)
             .clip(RoundedCornerShape(24.dp))
             .clickable(
-                onClick = { onClick(location) }
+                onClick = {
+                    location?.locationId?.let {
+                        onClick(it)
+                    }
+                }
             )
     ) {
 

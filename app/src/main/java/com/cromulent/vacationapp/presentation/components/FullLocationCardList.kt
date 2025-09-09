@@ -50,7 +50,7 @@ fun FullLocationCardList(
     listTitle: String,
     locations: List<Location?>,
     isLoading: Boolean = false,
-    onLocationClicked: (Location?) -> Unit,
+    onLocationClicked: (String) -> Unit,
     onSeeAllClicked: (() -> Unit)? = null,
 ) {
 
